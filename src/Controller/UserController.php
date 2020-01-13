@@ -62,7 +62,9 @@ class UserController extends AbstractController
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
         if( $this->getUser() ){
-            return $this->redirectToRoute('dashboard');
+            $this->addFlash('success', 'Vous  éte bien  connecté ');
+            return $this->redirectToRoute("home");
+            
         }
 
         $error = $authenticationUtils->getLastAuthenticationError();

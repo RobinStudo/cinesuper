@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20200113092159 extends AbstractMigration
+final class Version20200113112605 extends AbstractMigration
 {
     public function getDescription() : string
     {
@@ -22,8 +22,8 @@ final class Version20200113092159 extends AbstractMigration
         // this up() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
-        $this->addSql('ALTER TABLE user CHANGE card_id card_id INT NOT NULL');
-        $this->addSql('ALTER TABLE user ADD CONSTRAINT FK_8D93D6494ACC9A20 FOREIGN KEY (card_id) REFERENCES card (id)');
+        $this->addSql('ALTER TABLE card CHANGE number number BIGINT NOT NULL');
+        $this->addSql('ALTER TABLE voucher CHANGE serial_number serial INT NOT NULL, CHANGE expire_at expired_at DATETIME NOT NULL');
     }
 
     public function down(Schema $schema) : void
@@ -31,7 +31,7 @@ final class Version20200113092159 extends AbstractMigration
         // this down() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
-        $this->addSql('ALTER TABLE user DROP FOREIGN KEY FK_8D93D6494ACC9A20');
-        $this->addSql('ALTER TABLE user CHANGE card_id card_id INT DEFAULT NULL');
+        $this->addSql('ALTER TABLE card CHANGE number number INT NOT NULL');
+        $this->addSql('ALTER TABLE voucher CHANGE serial serial_number INT NOT NULL, CHANGE expired_at expire_at DATETIME NOT NULL');
     }
 }

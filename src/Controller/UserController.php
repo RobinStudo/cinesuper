@@ -11,6 +11,8 @@ use App\Entity\User;
 use App\Form\RegisterType;
 use App\Service\MailerService;
 use App\Service\UserService;
+use Symfony\Component\HttpFoundation\File\Exception\AccessDeniedException;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class UserController extends AbstractController
 {
@@ -29,6 +31,10 @@ class UserController extends AbstractController
      */
     public function register( Request $request ): Response
     {
+
+        if( $this->getUser() ){
+            return $this->redirectToRoute('dashboard');
+        }
         $user = new User();
         $form = $this->createForm( RegisterType::class, $user );
 
@@ -46,7 +52,7 @@ class UserController extends AbstractController
             $em->flush();
 
             $this->mailer->sendActivationMail( $user );
-
+            
             $this->addFlash( 'info', 'Votre compte à bien été créé, activez le pour pouvoir vous connecter' );
             return $this->redirectToRoute( 'login' );
         }
@@ -56,11 +62,16 @@ class UserController extends AbstractController
         ));
     }
 
+
+
     /**
      * @Route("/login", name="login")
      */
+
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
+
+        
         if( $this->getUser() ){
             return $this->redirectToRoute('dashboard');
         }

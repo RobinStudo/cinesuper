@@ -83,6 +83,8 @@ class UserController extends AbstractController
     }
 
    /**
+     * Active account 
+     *
      * @Route("/user/activate/{token}", name="user_activate")
      */
     public function activate( $token, User $user )
@@ -91,26 +93,38 @@ class UserController extends AbstractController
         {
             if ($user->getTokenExpire() > new \DateTime())
             {   
-                $em = $this->getDoctrine()->getManager();
+                // set enable true and token null if valid condition
                 $user->setEnabled(true);
                 $user->setToken(null);
-                $this->addFlash('info','Votre compte a été activé');
+                // database entry
+                $em = $this->getDoctrine()->getManager();
                 $em->flush($user);
+                // add message if account is activate
+                $this->addFlash(
+                    'info',
+                    'Votre compte a été activé');
+                
             } else {
+                // add message if date is expired
                 $this->addFlash(
                     'danger',
                     'il y a eu un souci à la création de votre compte. <a href="/user/resendactivatetoken/'.$user->getId().'"> Renvoyer le mail d\'activation </a>');
             }
         }
+        // redirect to login route 
         return $this->redirectToRoute('login');
     }
 
     /**
-     * @Route("user/resendactivatetoken/{id}", name="resendactivatetoken")
+     * send activate token
+     *
+     * @Route("user/resendactivatetoken/{id}", name="user_resendactivatetoken")
      */
     public function resendactivatetoken (User $user){
 
+        // resend a activation token 
         $this->mailer->sendActivationMail( $user );
+         // redirect to login route 
         return $this->redirectToRoute('login');
     
     }

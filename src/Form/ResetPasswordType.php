@@ -2,6 +2,7 @@
 
 namespace App\Form;
 
+use App\Entity\ResetPassword;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints\Regex;
@@ -65,7 +66,7 @@ class ResetPasswordType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            // Configure your form options here
+            'data-class' => ResetPassword::class,
         ]);
     }
 }

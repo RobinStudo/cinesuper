@@ -169,7 +169,7 @@ class UserController extends AbstractController
             else
             {
                 $user->setPassword($this->encoder->encodePassword($user, $resetPassword->getNewPassword()));
-                $user->setToken("");
+                $this->userService->resetToken($user);
                 $entityManager->flush();
             
                 $this->addFlash('success', 'Le mot de passe a bien été modifié.');

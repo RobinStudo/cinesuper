@@ -31,7 +31,7 @@ class MailerService{
             'token' => $user->getToken(),
         ), UrlGenerator::ABSOLUTE_URL);
 
-        $text = "Bienvenue sur Nut Nut Food,
+        $text = "Bienvenue sur Ciné Super !!!,
         Pour réinitialiser votre mot de passe, veuillez cliquer sur le lien ci dessous
         ou copier/coller dans votre navigateur internet.
         ". $url ."

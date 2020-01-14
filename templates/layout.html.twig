@@ -1,5 +1,9 @@
 {% extends 'base.html.twig' %}
 
+{% block stylesheets %}
+    {{ parent() }}
+{% endblock %}
+
 {% block body %}
     <header>
         <nav class="navbar navbar-primary bg-primary">
@@ -29,4 +33,8 @@
     <footer>
         CineSuper - Tous droits réservés
     </footer>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
 {% endblock %}

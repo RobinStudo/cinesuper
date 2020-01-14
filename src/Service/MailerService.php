@@ -20,6 +20,7 @@ class MailerService{
         $url = $this->urlGenerator->generate( 'user_activate', array(
             'token' => $user->getToken(),
         ), UrlGenerator::ABSOLUTE_URL);
+
         $text = 'Bonjour, veuillez activer votre compte : ' . $url;
 
         $this->send( $user->getEmail(), $text );
@@ -46,6 +47,7 @@ class MailerService{
         $message->setFrom( 'no-reply@cinesuper.com' );
         $message->setTo( $email );
         $message->setBody( $text );
+
         $this->mailer->send( $message );
     }
 }

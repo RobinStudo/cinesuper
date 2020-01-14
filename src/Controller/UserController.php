@@ -79,7 +79,6 @@ class UserController extends AbstractController
 
         return $this->render('user/login.html.twig', array(
             'last_username' => $lastUsername,
-            'error' => $error
         ));
     }
 

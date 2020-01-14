@@ -7,6 +7,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Routing\Generator\UrlGenerator;
 use App\Entity\User;
 use App\Form\RegisterType;
 use App\Service\MailerService;
@@ -17,11 +19,13 @@ class UserController extends AbstractController
     private $encoder;
     private $userService;
     private $mailer;
+    private $urlGenerator;
 
-    public function __construct( UserPasswordEncoderInterface $encoder, MailerService $mailer, UserService $userService ){
+    public function __construct( UserPasswordEncoderInterface $encoder, MailerService $mailer, UserService $userService, UrlGeneratorInterface $urlGenerator ){
         $this->encoder = $encoder;
         $this->mailer = $mailer;
         $this->userService = $userService;
+        $this->urlGenerator = $urlGenerator;
     }
 
     /**
@@ -82,8 +86,8 @@ class UserController extends AbstractController
         ));
     }
 
-   /**
-     * Active account 
+    /**
+     * Activate account 
      *
      * @Route("/user/activate/{token}", name="user_activate")
      */
@@ -95,7 +99,7 @@ class UserController extends AbstractController
             {   
                 // set enable true and token null if valid condition
                 $user->setEnabled(true);
-                $user->setToken(null);
+                $this->userService->resetToken($user);
                 // database entry
                 $em = $this->getDoctrine()->getManager();
                 $em->flush($user);
@@ -103,12 +107,13 @@ class UserController extends AbstractController
                 $this->addFlash(
                     'info',
                     'Votre compte a été activé');
-                
             } else {
                 // add message if date is expired
+                $url = $this->urlGenerator->generate( 'user_resendactivatetoken', ['id' => $user->getId()], UrlGenerator::ABSOLUTE_URL);
+                
                 $this->addFlash(
                     'danger',
-                    'il y a eu un souci à la création de votre compte. <a href="/user/resendactivatetoken/'.$user->getId().'"> Renvoyer le mail d\'activation </a>');
+                    'Ce lien a expiré <a href="'.$url.'"> Renvoyer le mail d\'activation </a>');
             }
         }
         // redirect to login route 
@@ -116,17 +121,26 @@ class UserController extends AbstractController
     }
 
     /**
-     * send activate token
+     * Send activate token
      *
      * @Route("user/resendactivatetoken/{id}", name="user_resendactivatetoken")
      */
     public function resendactivatetoken (User $user){
 
-        // resend a activation token 
-        $this->mailer->sendActivationMail( $user );
-         // redirect to login route 
-        return $this->redirectToRoute('login');
-    
+        if(! $user->getEnabled()){
+            // generate token and expire date
+            $this->userService->generateToken($user);
+            $em = $this->getDoctrine()->getManager();
+            $em->flush($user);
+            // resend a activation token 
+            $this->mailer->sendActivationMail($user);
+            // message if link is send.
+            $this->addFlash(
+                    'info',
+                    'Un lien d\'activation vous a été envoyé');
+            // redirect to login route 
+            return $this->redirectToRoute('login');
+        }
     }
 
     /**

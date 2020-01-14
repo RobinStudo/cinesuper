@@ -26,6 +26,22 @@ class MailerService{
         $this->send( $user->getEmail(), $text );
     }
 
+    public function sendResetPassword( User $user)
+    {
+        $url = $this->urlGenerator->generate('reset_password', array(
+            'token' => $user->getToken(),
+        ), UrlGenerator::ABSOLUTE_URL);
+
+        $text = "Bienvenue sur Ciné Super !!!,
+        Pour réinitialiser votre mot de passe, veuillez cliquer sur le lien ci dessous
+        ou copier/coller dans votre navigateur internet.
+        ". $url ."
+        ---------------
+        Ceci est un mail automatique, Merci de ne pas y répondre.";
+        
+        $this->send( $user->getEmail(), $text);
+    }
+
     private function send( $email, $text ){
         $message = new Swift_Message();
         $message->setFrom( 'no-reply@cinesuper.com' );

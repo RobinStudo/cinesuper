@@ -1,7 +1,6 @@
 {% extends 'layout.html.twig' %}
 
 {% block stylesheets %}
-    {{ parent() }}
     {{ encore_entry_link_tags('dashboard') }}
 {% endblock %}
 
@@ -27,11 +26,55 @@
     </div>
 
     <section id="restContent">
-
+<div class="container">
+    <div class="dash mt-5 ml-5">
+        <div class="row text-center">
+            <div class="col-6">
+                <div class="card" style="width: 18rem;">
+                    <div class="card-body">
+                      <h5 class="card-title text-primary">Nom</h5>
+                      <h6 class="card-subtitle mb-2 text-muted">{{app.user.lastName }}</h6>
+                    </div>
+                </div>
+                <div class="card" style="width: 18rem;">
+                    <div class="card-body">
+                      <h5 class="card-title text-primary">Prénom</h5>
+                      <h6 class="card-subtitle mb-2 text-muted">{{app.user.firstName }}</h6>
+                    </div>
+                </div>
+                <div class="card" style="width: 18rem;">
+                    <div class="card-body">
+                      <h5 class="card-title text-primary">Email</h5>
+                      <h6 class="card-subtitle mb-2 text-muted">{{app.user.email}}</h6>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="card" style="width: 18rem;">
+                    <div class="card-body">
+                      <h5 class="card-title text-primary">Carte de fidelité créée le :</h5>
+                      <h6 class="card-subtitle mb-2 text-muted">{{app.user.createdAt|date('d/m/Y')}}</h6>
+                    </div>
+                </div>
+                <div class="card" style="width: 18rem;">
+                    <div class="card-body">
+                      <h5 class="card-title text-primary">Numéro de carte</h5>
+                      <h6 class="card-subtitle mb-2 text-muted">{{app.user.card.number}}</h6>
+                    </div>
+                </div>
+                <div class="card" style="width: 18rem;">
+                    <div class="card-body">
+                      <h5 class="card-title text-primary">Voucher</h5>
+                      <h6 class="card-subtitle mb-2 text-muted">{{app.user.card.vouchers|length}}</h6>
+                    </div>
+                </div>
+            </div>  
+        </div>
+    </div>
+</div>
     </section>
 {% endblock %}
 
 {% block javascripts %}
-    {{ parent() }}
     {{ encore_entry_script_tags('dashboard') }}
 {% endblock %}

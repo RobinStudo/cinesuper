@@ -17,7 +17,7 @@ class Voucher
     private $id;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="string", length=180, unique=true)
      */
     private $serial;
 
@@ -37,12 +37,12 @@ class Voucher
         return $this->id;
     }
 
-    public function getSerial(): ?int
+    public function getSerial(): ?string
     {
         return $this->serial;
     }
 
-    public function setSerial(int $serial): self
+    public function setSerial(string $serial): self
     {
         $this->serial = $serial;
 

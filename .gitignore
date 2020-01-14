@@ -10,10 +10,13 @@ public/avatars/
 /.env.local
 /.env.local.php
 /.env.*.local
+composer.lock
+symfony.lock
 /config/secrets/prod/prod.decrypt.private.php
 /public/bundles/
 /var/
 /vendor/
+/symfony.lock
 ###< symfony/framework-bundle ###
 
 ###> symfony/phpunit-bridge ###

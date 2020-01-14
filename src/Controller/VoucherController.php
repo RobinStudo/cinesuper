@@ -4,7 +4,6 @@ namespace App\Controller;
 
 use App\Entity\Card;
 use App\Entity\Voucher;
-use App\Repository\VoucherRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -24,11 +23,9 @@ class VoucherController extends AbstractController
              
 
                 $voucher = new Voucher();
-            
-                $voucher->setCard($card);
-                
-    
-                $serialNumber = mt_rand( 1000, 99999); 
+                      
+                // changer le type de serial number en chaine 
+                $serialNumber =$card->getUser()->getLastName().uniqid();
     
                 $voucher->setSerial($serialNumber);
     
@@ -49,10 +46,6 @@ class VoucherController extends AbstractController
           return $this->redirectToRoute('dashboard') ;
        
     }
-
-    
-
-   
 
 
 

@@ -47,7 +47,7 @@ class UserController extends AbstractController
             $card = $this->userService->generateCard( $user );
 
             $em = $this->getDoctrine()->getManager();
-            $user->setRoles(['ROLE_ADMIN']);
+            //$user->setRoles(['ROLE_ADMIN']);
             $em->persist( $card );
             $em->persist( $user );
             $em->flush();

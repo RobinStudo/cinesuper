@@ -11,17 +11,21 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Routing\Generator\UrlGenerator;
 
 class UserController extends AbstractController
 {
     private $encoder;
     private $userService;
     private $mailer;
+    private $urlGenerator;
 
-    public function __construct( UserPasswordEncoderInterface $encoder, MailerService $mailer, UserService $userService ){
+    public function __construct( UserPasswordEncoderInterface $encoder, MailerService $mailer, UserService $userService, UrlGeneratorInterface $urlGenerator ){
         $this->encoder = $encoder;
         $this->mailer = $mailer;
         $this->userService = $userService;
+        $this->urlGenerator = $urlGenerator;
     }
 
     /**
@@ -79,16 +83,64 @@ class UserController extends AbstractController
 
         return $this->render('user/login.html.twig', array(
             'last_username' => $lastUsername,
-            'error' => $error
         ));
     }
 
     /**
+     * Activate account
+     *
      * @Route("/user/activate/{token}", name="user_activate")
      */
-    public function activate( $token )
+    public function activate( $token, User $user )
     {
-        return new Response('bonjour');
+        if(! $user->getEnabled())
+        {
+            if ($user->getTokenExpire() > new \DateTime())
+            {
+                // set enable true and token null if valid condition
+                $user->setEnabled(true);
+                $this->userService->resetToken($user);
+                // database entry
+                $em = $this->getDoctrine()->getManager();
+                $em->flush($user);
+                // add message if account is activate
+                $this->addFlash(
+                    'info',
+                    'Votre compte a été activé');
+            } else {
+                // add message if date is expired
+                $url = $this->urlGenerator->generate( 'user_resendactivatetoken', ['id' => $user->getId()], UrlGenerator::ABSOLUTE_URL);
+
+                $this->addFlash(
+                    'danger',
+                    'Ce lien a expiré <a href="'.$url.'"> Renvoyer le mail d\'activation </a>');
+            }
+        }
+        // redirect to login route
+        return $this->redirectToRoute('login');
+    }
+
+    /**
+     * Send activate token
+     *
+     * @Route("user/resendactivatetoken/{id}", name="user_resendactivatetoken")
+     */
+    public function resendactivatetoken (User $user){
+
+        if(! $user->getEnabled()){
+            // generate token and expire date
+            $this->userService->generateToken($user);
+            $em = $this->getDoctrine()->getManager();
+            $em->flush($user);
+            // resend a activation token
+            $this->mailer->sendActivationMail($user);
+            // message if link is send.
+            $this->addFlash(
+                    'info',
+                    'Un lien d\'activation vous a été envoyé');
+            // redirect to login route
+            return $this->redirectToRoute('login');
+        }
     }
 
     /**
@@ -102,8 +154,5 @@ class UserController extends AbstractController
     public function dashboard()
     {
         return $this->render('user/dashboard.html.twig');
-        
     }
-
-    
 }

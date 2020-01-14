@@ -83,12 +83,37 @@ class UserController extends AbstractController
         ));
     }
 
-    /**
+   /**
      * @Route("/user/activate/{token}", name="user_activate")
      */
-    public function activate( $token )
+    public function activate( $token, User $user )
     {
-        return new Response('bonjour');
+        if(! $user->getEnabled())
+        {
+            if ($user->getTokenExpire() > new \DateTime())
+            {   
+                $em = $this->getDoctrine()->getManager();
+                $user->setEnabled(true);
+                $user->setToken(null);
+                $this->addFlash('info','Votre compte a été activé');
+                $em->flush($user);
+            } else {
+                $this->addFlash(
+                    'danger',
+                    'il y a eu un souci à la création de votre compte. <a href="/user/resendactivatetoken/'.$user->getId().'"> Renvoyer le mail d\'activation </a>');
+            }
+        }
+        return $this->redirectToRoute('login');
+    }
+
+    /**
+     * @Route("user/resendactivatetoken/{id}", name="resendactivatetoken")
+     */
+    public function resendactivatetoken (User $user){
+
+        $this->mailer->sendActivationMail( $user );
+        return $this->redirectToRoute('login');
+    
     }
 
     /**

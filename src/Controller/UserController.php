@@ -5,7 +5,8 @@ use App\Entity\Picture;
 use App\Form\PictureType;
 use App\Repository\PictureRepository;
 use App\Service\PictureService;
-use Symfony\Bundle\FrameworkBundle\use App\Entity\User;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Entity\User;
 use App\Form\RegisterType;
 use App\Service\UserService;
 use App\Entity\ResetPassword;
@@ -39,8 +40,6 @@ class UserController extends AbstractController
      */
     public function register( Request $request ): Response
     {
-
-
         if( $this->getUser() ){
             return $this->redirectToRoute('dashboard');
         }
@@ -57,7 +56,6 @@ class UserController extends AbstractController
             $card = $this->userService->generateCard( $user );
 
             $em = $this->getDoctrine()->getManager();
-            //$user->setRoles(['ROLE_ADMIN']);
             $em->persist( $card );
             $em->persist( $user );
             $em->flush();
@@ -78,8 +76,6 @@ class UserController extends AbstractController
      */
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
-
-        
         if( $this->getUser() ){
             $this->addFlash('info', 'Vous êtes déjà connecté(e)');
             return $this->redirectToRoute('dashboard');
@@ -138,7 +134,7 @@ class UserController extends AbstractController
      */
     public function resendactivatetoken (User $user){
 
-        if(! $user->getEnabled()){
+        if( !$user->getEnabled() ){
             // generate token and expire date
             $this->userService->generateToken($user);
             $em = $this->getDoctrine()->getManager();
@@ -194,11 +190,12 @@ class UserController extends AbstractController
 
         return $this->render("user/dashboard.html.twig", [
             "avatarForm" => $avatarForm->createView(),
+        ]);
     }
 
     /**
      * Permet d'initier la méthode du mot de passe oublié
-     * 
+     *
      * @Route("/mot-de-passe-oublie",name="forget_password")
      *
      * @param Request $request
@@ -216,7 +213,7 @@ class UserController extends AbstractController
             if ($user) {
                 $this->userService->generateToken( $user );
                 $entityManager->flush();
-    
+
                 $this->mailer->sendResetPassword( $user );
             }
 
@@ -228,7 +225,7 @@ class UserController extends AbstractController
 
     /**
      * Permet de réintialiser le mot de passe
-     * 
+     *
      * @Route("/reset_password/{token}", name="reset_password")
      *
      * @param string $token
@@ -247,7 +244,7 @@ class UserController extends AbstractController
 
         $resetPassword = new ResetPassword;
 
-        $form = $this->createForm(ResetPasswordType::class, $resetPassword);        
+        $form = $this->createForm(ResetPasswordType::class, $resetPassword);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid())
@@ -261,12 +258,12 @@ class UserController extends AbstractController
                 $user->setPassword($this->encoder->encodePassword($user, $resetPassword->getNewPassword()));
                 $this->userService->resetToken($user);
                 $entityManager->flush();
-            
+
                 $this->addFlash('success', 'Le mot de passe a bien été modifié.');
             }
             return $this->redirectToRoute('home');
         }
-     
+
         return $this->render('user/reset_password.html.twig',[
             'token' => $token,
             'form' => $form->createView(),

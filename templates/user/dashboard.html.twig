@@ -16,7 +16,7 @@
     <div id="avatarContainer">
         {% if app.user.picture %}
             <figure>
-                <img alt="avatarPicture" src="avatars/{{ app.user.picture.name }}" />
+                <img alt="avatarPicture" src="{{ asset('avatars/' ~ app.user.picture.name ) }}" />
             </figure>
         {% else %}
             <p id="defaultMessage">
@@ -68,7 +68,7 @@
                       <h6 class="card-subtitle mb-2 text-muted">{{app.user.card.vouchers|length}}</h6>
                     </div>
                 </div>
-            </div>  
+            </div>
         </div>
     </div>
 </div>

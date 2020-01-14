@@ -14,6 +14,12 @@ class UserService{
         $user->setTokenExpire( $expire );
     }
 
+    public function resetToken( User $user)
+    {
+        $user->setToken(null);
+        $user->setTokenExpire(null);
+    }
+
     public function generateCard( User $user ): Card{
         $card = new Card();
         $number = time() . mt_rand( 1000, 9999 );

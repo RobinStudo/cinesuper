@@ -89,15 +89,15 @@ class User implements UserInterface
     private $createdAt;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $picture;
-
-    /**
      * @ORM\OneToOne(targetEntity="App\Entity\Card", inversedBy="user", cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=false)
      */
     private $card;
+
+    /**
+     * @ORM\OneToOne(targetEntity="App\Entity\Picture", inversedBy="user", cascade={"persist"})
+     */
+    private $picture;
 
     public function __construct(){
         $this->createdAt = new \DateTime();
@@ -256,18 +256,6 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getPicture(): ?string
-    {
-        return $this->picture;
-    }
-
-    public function setPicture(?string $picture): self
-    {
-        $this->picture = $picture;
-
-        return $this;
-    }
-
     public function getCard(): ?Card
     {
         return $this->card;
@@ -276,6 +264,18 @@ class User implements UserInterface
     public function setCard(Card $card): self
     {
         $this->card = $card;
+
+        return $this;
+    }
+
+    public function getPicture(): ?Picture
+    {
+        return $this->picture;
+    }
+
+    public function setPicture(?Picture $picture): self
+    {
+        $this->picture = $picture;
 
         return $this;
     }

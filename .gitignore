@@ -2,6 +2,9 @@
 /.idea
 ###> F***ing php storm file ###
 
+###> Vich public folder ###
+public/avatars/
+###> Vich public folder ###
 
 ###> symfony/framework-bundle ###
 /.env.local

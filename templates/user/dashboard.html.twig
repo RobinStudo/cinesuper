@@ -1,0 +1,37 @@
+{% extends 'layout.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    {{ encore_entry_link_tags('dashboard') }}
+{% endblock %}
+
+{% block title %}Dashboard - {{ parent() }}{% endblock %}
+
+{% block content %}
+    <div id="addPictureFormContainer" class="invisible">
+        {{ form_start(avatarForm) }}
+            <a id="closeForm"><i class="fas fa-window-close"></i></a>
+        {{ form_end(avatarForm) }}
+    </div>
+
+    <div id="avatarContainer">
+        {% if app.user.picture %}
+            <figure>
+                <img alt="avatarPicture" src="avatars/{{ app.user.picture.name }}" />
+            </figure>
+        {% else %}
+            <p id="defaultMessage">
+                Click to add a picture
+            </p>
+        {% endif %}
+    </div>
+
+    <section id="restContent">
+
+    </section>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {{ encore_entry_script_tags('dashboard') }}
+{% endblock %}

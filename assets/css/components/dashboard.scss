@@ -1,0 +1,97 @@
+@import '../core.scss';
+
+body {
+  transition: all 0.5s ease;
+}
+
+main {
+  position: relative;
+}
+
+#restContent {
+  flex: 1;
+}
+
+#avatarContainer {
+  display: flex;
+  position: absolute;
+  top: 40px;
+  right: 40px;
+  width: 100px;
+  height: 100px;
+  background-color: $lightDark;
+  color: black;
+  border-radius: 50%;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+#avatarContainer figure, #avatarContainer figure img {
+  width: 100%;
+  height: 100%;
+}
+
+#defaultMessage {
+  font-size: 0.52em;
+  margin: auto;
+}
+
+#addPictureFormContainer {
+  text-align: center;
+  width: 450px;
+  position: absolute;
+  top: calc(50% - 75px);
+  left: calc(50% - 225px);
+  font-size: 1.1em;
+  text-transform: uppercase;
+  background-color: rgba(255, 255, 255, 0.5);
+  z-index: 1000;
+  animation: fadeIn 0.5s ease both;
+}
+
+#addPictureFormContainer label {
+  margin: 25px 0 10px;
+}
+
+#addPictureFormContainer form {
+  padding: 40px;
+  box-sizing: border-box;
+  border-radius: 5px;
+  position: relative;
+}
+
+#addPictureFormContainer form, #addPictureFormContainer form div {
+  height: 100%;
+}
+
+#addPictureFormContainer form input {
+  margin: auto;
+}
+
+#closeForm {
+  cursor: pointer;
+  transition: color 0.2s ease;
+  position: absolute;
+  right: 30px;
+  top: 30px;
+}
+
+#closeForm:hover {
+  color: rgb(65, 65, 65);
+}
+
+.fa-window-close {
+  font-size: 2em;
+}
+
+#picture div {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+.btn-primary {
+  width: 150px;
+  margin: 25px auto 0;
+}
+

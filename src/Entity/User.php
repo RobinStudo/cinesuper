@@ -99,6 +99,7 @@ class User implements UserInterface
      */
     private $card;
 
+
     public function __construct(){
         $this->createdAt = new \DateTime();
     }

@@ -62,3 +62,26 @@ footer{
         }
     }
 }
+.form{
+    form{
+        justify-content: center;
+        top:50%;
+        left:50%;
+        max-width: 450px;
+        margin: 50px auto 0 auto;
+    }
+    .btn-primary{
+        margin-left: 100px;
+     }
+     
+     ul{
+         list-style: none;
+     }
+     .errors{
+         color: red;
+         list-style-type: none;
+     }
+    
+}
+
+

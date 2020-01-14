@@ -29,6 +29,8 @@ class UserController extends AbstractController
      */
     public function register( Request $request ): Response
     {
+
+
         if( $this->getUser() ){
             return $this->redirectToRoute('dashboard');
         }
@@ -45,6 +47,7 @@ class UserController extends AbstractController
             $card = $this->userService->generateCard( $user );
 
             $em = $this->getDoctrine()->getManager();
+            $user->setRoles(['ROLE_ADMIN']);
             $em->persist( $card );
             $em->persist( $user );
             $em->flush();
@@ -66,6 +69,7 @@ class UserController extends AbstractController
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
 
+        
         if( $this->getUser() ){
             $this->addFlash('info', 'Vous êtes déjà connecté(e)');
             return $this->redirectToRoute('dashboard');
@@ -73,9 +77,9 @@ class UserController extends AbstractController
 
         $error = $authenticationUtils->getLastAuthenticationError();
         $lastUsername = $authenticationUtils->getLastUsername();
-        
+
         if ($error) {
-             $this->addFlash( 'danger', 'Les champs renseignés ne sont pas valide' );
+             $this->addFlash( 'danger', $error->getMessage() );
         }
 
         return $this->render('user/login.html.twig', array(

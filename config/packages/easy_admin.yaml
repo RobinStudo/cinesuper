@@ -3,10 +3,13 @@ easy_admin:
         # List the entity class name you want to manage
         Customer:
             class: App\Entity\User
+            label: Utilisateur
         Order:
             class: App\Entity\Card
+            label: carte
         Product:
             class: App\Entity\Voucher
+            label: Le bon
     site_name: 'Cinesuper'
     design:
         brand_color: '#e67e22'

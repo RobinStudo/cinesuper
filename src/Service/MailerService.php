@@ -6,6 +6,7 @@ use Swift_Message;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\Generator\UrlGenerator;
 use App\Entity\User;
+use Symfony\Component\HttpFoundation\Request;
 
 class MailerService{
     private $urlGenerator;
@@ -49,5 +50,14 @@ class MailerService{
         $message->setBody( $text );
 
         $this->mailer->send( $message );
+    }
+
+    public function vouchergenerate($email, $nbVoucher)
+    {
+        //text for free places
+        $text = 'Bravo tu as ' . $nbVoucher. ' place gratuite(s).';
+        
+        //send mail
+        $this->send( $email, $text);
     }
 }

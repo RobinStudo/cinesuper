@@ -38,7 +38,7 @@ class ResetPasswordType extends AbstractType
                         ]),
                         new Regex([
                             "pattern" => "/^\S+$/",
-                            "message" => "Don't use spaces in your password."
+                            "message" => "N'utilisez pas d'espace dans votre mot de passe."
                         ]),
                     ],
                     'attr' => [
@@ -67,6 +67,11 @@ class ResetPasswordType extends AbstractType
     {
         $resolver->setDefaults([
             'data-class' => ResetPassword::class,
+            'csrf_protection' => true,
+            'label' => false,
+            'attr' => [
+                "novalidate" => "novalidate",
+            ]
         ]);
     }
 }

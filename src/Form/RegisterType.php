@@ -3,6 +3,7 @@ namespace App\Form;
 
 use App\Entity\User;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -17,12 +18,27 @@ class RegisterType extends AbstractType
         $builder
             ->add('firstName', TextType::class, [
                 "label" => "Firstname",
+                "attr" => [
+                    'class' => "form-control",
+                ],
             ])
             ->add('lastName', TextType::class, [
                 "label" => "LastName",
+                "attr" => [
+                    'class' => "form-control",
+                ],
             ])
             ->add('email', EmailType::class, [
                 "label" => "Email",
+                "attr" => [
+                    'class' => "form-control",
+                ],
+            ])
+            ->add('birthdate', DateType::class, [
+                'label' => "Date de naissance",
+                "attr" => [
+                    'class' => "form-control",
+                ],
             ])
             ->add('password', PasswordType::class, [
                 "label" => "Password",
@@ -31,7 +47,10 @@ class RegisterType extends AbstractType
                         "pattern" => "/^\S+$/",
                         "message" => "Don't use spaces in your password."
                     ])
-                ]
+                ],
+                "attr" => [
+                    'class' => "form-control",
+                ],
             ])
         ;
     }

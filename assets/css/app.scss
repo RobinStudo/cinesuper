@@ -15,6 +15,10 @@ main{
     flex-direction: column;
 }
 
+.dropdown-toggle {
+    font-size: 1.2em !important;
+}
+
 .navbar-primary{
     background-color: $primary!important;
 
@@ -22,7 +26,6 @@ main{
         font-size: 1.8rem;
         color: $light;
     }
-
 }
 
 .avatar-mini{
@@ -37,7 +40,19 @@ footer{
     text-align: center;
 }
 
+// --- Header ---
+
+.navbar-toggler-icon {
+    display: flex;
+    color: white
+}
+
+.svg-inline--fa {
+    margin: auto;
+}
+
 // --- Home ---
+
 .landing{
     width: 100%;
     flex-grow: 1;

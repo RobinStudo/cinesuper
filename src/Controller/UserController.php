@@ -3,7 +3,9 @@ namespace App\Controller;
 
 use App\Entity\Picture;
 use App\Form\PictureType;
+use App\Form\RenewPasswordType;
 use App\Repository\PictureRepository;
+use App\Repository\UserRepository;
 use App\Service\PictureService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use App\Entity\User;
@@ -12,6 +14,7 @@ use App\Service\UserService;
 use App\Entity\ResetPassword;
 use App\Service\MailerService;
 use App\Form\ResetPasswordType;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -267,6 +270,46 @@ class UserController extends AbstractController
         return $this->render('user/reset_password.html.twig',[
             'token' => $token,
             'form' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * @Route("dashboard/renewpassword", name="renew_password", methods={"GET", "POST"})
+     * @param Request $request
+     * @param RenewPasswordType $renewPasswordType
+     * @param UserRepository $userRepository
+     * @param UserPasswordEncoderInterface $encoder
+     * @return RedirectResponse|Response
+     */
+    public function renewPassword(Request $request, RenewPasswordType $renewPasswordType, UserRepository $userRepository, UserPasswordEncoderInterface $encoder)
+    {
+        $user = $this->getUser();
+
+        if (!$user) {
+            return $this->redirectToRoute("home");
+        }
+
+        $form = $this->createForm(RenewPasswordType::class, []);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $newPassword = $form["new_password"]->getData()["newPassword"];
+
+            $user->setPassword($encoder->encodePassword($user, $newPassword));
+
+            $this
+                ->getDoctrine()
+                ->getManager()
+                ->flush();
+
+            $this->addFlash("success", "Votre mot de passe a bien été modifié.");
+
+            return $this->redirectToRoute("dashboard");
+        }
+
+        return $this->render("user/changePassword.html.twig", [
+            "form" => $form->createView(),
         ]);
     }
 }

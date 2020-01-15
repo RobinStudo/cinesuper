@@ -49,6 +49,8 @@ easy_admin:
                         expanded: true
                         multiple: true
                         choices: { 'Caissière': 'ROLE_USER', 'Client': 'ROLE_USER', 'Administeur': 'ROLE_ADMIN' }
+
+                        
         Order:
             class: App\Entity\Card
             label: carte

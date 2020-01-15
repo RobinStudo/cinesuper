@@ -60,4 +60,9 @@ class MailerService{
         //send mail
         $this->send( $email, $text);
     }
+
+    public function sendAnniversary($email, $text)
+    {
+        $this->send( $email, $text);
+    }
 }

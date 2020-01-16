@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller;
+namespace App\Service;
 
 use App\Entity\User;
 use App\Entity\Event;
@@ -12,11 +12,19 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 
-class VoucherController extends AbstractController
+class GiftService
 {
-    /**
-     * @Route("/voucher/{id}", name="addFidelity")
-     */
+    public function __construct()
+    {
+
+    }
+
+    public function generateVoucher(User $user, MailerService $mailerService, Request $request)
+    {
+
+    }
+
+        /*
     public function vouchergenerate(User $user, MailerService $mailerService, Request $request, EventRepository $eventRepository)
     {
         $card = $user->getCard();
@@ -84,6 +92,7 @@ class VoucherController extends AbstractController
             'card' => $card,
         ]);
     }
+    }*/
 
     
 }

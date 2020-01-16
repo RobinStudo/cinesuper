@@ -90,7 +90,7 @@
                     <tr>
                         <th scope="row">{{ loop.index }}</th>
                         <td> {{ voucher.serial }}</td>
-                        <td>{{ voucher.expiredAt}}</td>
+                        <td>{{ voucher.expiredAt|date('d/m/Y')}}</td>
                     </tr>
                 {% endfor %}
                 </tbody>

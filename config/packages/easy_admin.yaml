@@ -16,8 +16,12 @@ easy_admin:
                       label: Nom
                     - property: email
                       label: Email
+                    - property: birthdate
+                      label: Date de naissance
                     - property: roles
                       label: Roles
+                actions:
+                    - {name: 'addFidelity', type: 'route'}
             form:
                 label: Utilisateur
                 form_options: { validation_groups: [] }
@@ -28,8 +32,15 @@ easy_admin:
                       label: Nom
                     - property: email
                       label: Email
+                    - property: birthdate
+                      label: Date de naissance
                     - property: enabled
                       label: Compte activé
+                    - property: birthdate
+                      type: date
+                      label: Date de naissance
+                      type_options:
+                        widget: single_text
                     - property: created_at
                       type: date
                       label: Date de création
@@ -48,13 +59,38 @@ easy_admin:
                         mapped: true
                         expanded: true
                         multiple: true
-                        choices: { 'Caissière': 'ROLE_USER', 'Client': 'ROLE_USER', 'Administeur': 'ROLE_ADMIN' }
+                        choices: { 'Caissière': 'ROLE_CASHIER', 'Client': 'ROLE_USER', 'Administeur': 'ROLE_ADMIN' }
+            edit:
+                item_permission: 'ROLE_ADMIN'
+            new:
+                item_permission: 'ROLE_ADMIN'
+            delete:
+                item_permission: 'ROLE_ADMIN'
+
         Order:
             class: App\Entity\Card
-            label: carte
+            label: Carte
+            edit:
+                item_permission: 'ROLE_ADMIN'
+            new:
+                item_permission: 'ROLE_ADMIN'
+            delete:
+                item_permission: 'ROLE_ADMIN'
+
         Product:
             class: App\Entity\Voucher
-            label: Le bon
+            label: Voucher
+            edit:
+                item_permission: 'ROLE_ADMIN'
+            new:
+                item_permission: 'ROLE_ADMIN'
+            delete:
+                item_permission: 'ROLE_ADMIN'
+
     site_name: 'Cinesuper'
     design:
         brand_color: '#e67e22'
+        menu:
+            - { entity: 'Customer', icon: 'user' }
+            - { entity: 'Order', icon: 'id-card' }
+            - { entity: 'Product', icon: 'gift' }

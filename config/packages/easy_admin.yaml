@@ -1,9 +1,54 @@
 easy_admin:
+    formats:
+        date:     'd/m/Y'
+        time:     'H:i'
+        datetime: 'd/m/Y H:i:s'
     entities:
         # List the entity class name you want to manage
         Customer:
             class: App\Entity\User
             label: Utilisateur
+            list:
+                fields:
+                    - property: firstName
+                      label: Prénom
+                    - property: lastName
+                      label: Nom
+                    - property: email
+                      label: Email
+                    - property: roles
+                      label: Roles
+            form:
+                label: Utilisateur
+                form_options: { validation_groups: [] }
+                fields:
+                    - property: firstName
+                      label: Prénom
+                    - property: lastName
+                      label: Nom
+                    - property: email
+                      label: Email
+                    - property: enabled
+                      label: Compte activé
+                    - property: created_at
+                      type: date
+                      label: Date de création
+                      type_options:
+                        disabled: true
+                        widget: single_text
+                    - property: password
+                      css_class: 'd-none'
+                      type: text
+                      type_options:
+                        mapped: false
+                        disabled: true
+                    - property: 'roles' 
+                      type: 'choice'
+                      type_options:
+                        mapped: true
+                        expanded: true
+                        multiple: true
+                        choices: { 'Caissière': 'ROLE_USER', 'Client': 'ROLE_USER', 'Administeur': 'ROLE_ADMIN' }
         Order:
             class: App\Entity\Card
             label: carte

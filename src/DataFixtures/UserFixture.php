@@ -48,6 +48,7 @@ class UserFixture extends BaseFixture
                 ->setLastName("Hasselhoff")
                 ->setEnabled(1)
                 ->setRoles(["ROLE_ADMIN"])
+                ->setBirthdate(new \Datetime('now'))
                 ->setCard($this->userService->generateCard($user));
         });
 

@@ -99,6 +99,11 @@ class User implements UserInterface
      */
     private $picture;
 
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $birthdate;
+
     public function __construct(){
         $this->createdAt = new \DateTime();
     }
@@ -283,5 +288,17 @@ class User implements UserInterface
     public function __toString()
     {
         return $this->firstName . ' ' . $this->lastName;
+    }
+
+    public function getBirthdate(): ?\DateTimeInterface
+    {
+        return $this->birthdate;
+    }
+
+    public function setBirthdate(\DateTimeInterface $birthdate): self
+    {
+        $this->birthdate = $birthdate;
+
+        return $this;
     }
 }

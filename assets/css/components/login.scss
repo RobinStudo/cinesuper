@@ -1,0 +1,42 @@
+/* ----------------------- LOGIN-FORM ----------------------- */
+
+.landing {
+    display: flex;
+    padding: 40px 0;
+}
+
+form {
+    margin: auto;
+    width: 60%;
+    max-width: 600px;
+    background-color: rgba(255, 255, 255, 0.8);
+    padding: 50px;
+    border-radius: 5px;
+}
+
+.alert {
+    margin: 0;
+}
+
+#forgotPasswordContainer {
+    margin-top: 10px;
+}
+
+#forgotPasswordLink {
+    font-size: 0.8em;
+    color: inherit;
+}
+
+/* ----------------------- RESPONSIVE ----------------------- */
+
+@media (max-width: 850px) {
+    form {
+        width: 90%;
+        padding: 35px;
+        font-size: 90%;
+    }
+
+    .mb-5 {
+        margin-bottom: 2.2rem !important;
+    }
+}

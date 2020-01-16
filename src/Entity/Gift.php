@@ -5,9 +5,9 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\VoucherRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\GiftRepository")
  */
-class Voucher
+class Gift
 {
     /**
      * @ORM\Id()
@@ -22,15 +22,16 @@ class Voucher
     private $serial;
 
     /**
-     * @ORM\Column(type="datetime")
-     */
-    private $expiredAt;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Card", inversedBy="vouchers")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Card", inversedBy="gifts")
      * @ORM\JoinColumn(nullable=false)
      */
     private $card;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\GiftType", inversedBy="gifts")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $giftType;
 
     public function getId(): ?int
     {
@@ -49,18 +50,6 @@ class Voucher
         return $this;
     }
 
-    public function getExpiredAt(): ?\DateTimeInterface
-    {
-        return $this->expiredAt;
-    }
-
-    public function setExpiredAt(\DateTimeInterface $expiredAt): self
-    {
-        $this->expiredAt = $expiredAt;
-
-        return $this;
-    }
-
     public function getCard(): ?Card
     {
         return $this->card;
@@ -72,7 +61,19 @@ class Voucher
 
         return $this;
     }
-    
+
+    public function getGiftType(): ?GiftType
+    {
+        return $this->giftType;
+    }
+
+    public function setGiftType(?GiftType $giftType): self
+    {
+        $this->giftType = $giftType;
+
+        return $this;
+    }
+
     public function __toString()
     {
         return $this->serial;

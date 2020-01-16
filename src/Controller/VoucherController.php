@@ -13,45 +13,54 @@ use Symfony\Component\HttpFoundation\Request;
 class VoucherController extends AbstractController
 {
     /**
-     * @Route("/voucher/{id}", name="voucher")
+     * @Route("/voucher/{id}", name="addFidelity")
      */
-    public function vouchergenerate(Card $card, MailerService $mailerService)
+    public function vouchergenerate(Card $card, MailerService $mailerService, Request $request)
     {  
-        if($card->getFidelity() >= 10) 
-        { 
-            $nbplace = $card->getFidelity();
-            $nbVoucher = intdiv($nbplace,10);
-            $nbPlacesRestantes = $nbplace - $nbVoucher * 10;
+        if ($request->isMethod('POST'))
+        {
+            $em = $this->getDoctrine()->getManager();
 
-            for ($i=1; $i <= $nbVoucher; $i++)
+            $card->setFidelity($card->getFidelity() + $request->request->get('ticketNumber'));
+            $em->flush();
+
+            if($card->getFidelity() >= 10) 
             { 
-                $voucher = new Voucher();
-                    
-                // changer le type de serial number en chaine 
-                $serialNumber =$card->getUser()->getLastName().uniqid();
-    
-                $voucher->setSerial($serialNumber);
-    
-                $voucher->setExpiredAt(new \DateTime( '6 months' ));
-                
-                // add voucher to Card
-                $card->addVoucher($voucher);
-                $card->setFidelity($nbPlacesRestantes);
-    
-                $em = $this->getDoctrine()->getManager();
-                $em->persist($voucher);
-                $em->persist($card);
-                $em->flush();
-            }
-            //succes message
-            $this->addFlash("success", "Vous avez le droit à  " . $nbVoucher. " place(s) gratuite(s). Nous avons envoyer votre bon par mail.");
-           
-            // instantiation send mail for free places
-            $email = $card->getUser()->getEmail();
+                $nbplace = $card->getFidelity();
+                $nbVoucher = intdiv($nbplace,10);
+                $nbPlacesRestantes = $nbplace - $nbVoucher * 10;
 
-            // mailerService
-            $mailerService->vouchergenerate($email, $nbVoucher);
+                for ($i=1; $i <= $nbVoucher; $i++)
+                { 
+                    $voucher = new Voucher();
+                        
+                    // changer le type de serial number en chaine 
+                    $serialNumber =$card->getUser()->getLastName().uniqid();
+        
+                    $voucher->setSerial($serialNumber);
+        
+                    $voucher->setExpiredAt(new \DateTime( '6 months' ));
+                    
+                    // add voucher to Card
+                    $card->addVoucher($voucher);
+                    $card->setFidelity($nbPlacesRestantes);
+        
+                    $em->persist($voucher);
+                    $em->persist($card);
+                    $em->flush();
+                }
+            
+                // instantiation send mail for free places
+                $email = $card->getUser()->getEmail();
+
+                // mailerService
+                $mailerService->vouchergenerate($email, $nbVoucher);
+            }
+            return $this->redirectToRoute('easyadmin');
         }
-        return $this->redirectToRoute('dashboard') ;
+
+        return $this->render('voucher/addFidelity.html.twig', [
+            'card' => $card,
+        ]);
     }
 }

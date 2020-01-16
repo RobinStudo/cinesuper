@@ -6,6 +6,7 @@ if (!Encore.isRuntimeEnvironmentConfigured()) {
 
 Encore
     .setOutputPath('public/build/')
+<<<<<<< HEAD
 
     // public path used by the web server to access the output path
     .setPublicPath('/build')
@@ -22,10 +23,15 @@ Encore
      * and one CSS file (e.g. app.css) if your JavaScript imports CSS.
      */
 
+=======
+    .setPublicPath('/build')
+>>>>>>> master
     .addEntry('app', './assets/js/app.js')
     .addEntry('register', './assets/js/components/register.js')
     .addEntry('dashboard', './assets/js/components/dashboard.js')
+    .addEntry('resetPassword', './assets/js/components/resetPassword.js')
     .addEntry('renewPassword', './assets/js/components/renewPassword.js')
+    .addEntry('login', './assets/js/components/login.js')
     .splitEntryChunks()
     .enableSingleRuntimeChunk()
     .cleanupOutputBeforeBuild()

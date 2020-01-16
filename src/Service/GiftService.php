@@ -1,23 +1,25 @@
 <?php
 
-namespace App\Controller;
+namespace App\Service;
 
-use App\Entity\Card;
 use App\Entity\User;
-use App\Entity\Voucher;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Routing\Annotation\Route;
-use App\Service\MailerService;
 use Symfony\Component\HttpFoundation\Request;
 
-class VoucherController extends AbstractController
+class GiftService
 {
-    /**
-     * @Route("/voucher/{id}", name="addFidelity")
-     */
-    public function vouchergenerate(User $user, MailerService $mailerService, Request $request)
+    public function __construct()
     {
-        $card = $user->getCard();
+
+    }
+
+    public function generateVoucher(User $user, MailerService $mailerService, Request $request)
+    {
+
+
+        /*public function vouchergenerate(User $user, MailerService $mailerService, Request $request)
+    {
+        /*$card = $user->getCard();
+
         if ($request->isMethod('POST'))
         {
             $em = $this->getDoctrine()->getManager();
@@ -63,5 +65,8 @@ class VoucherController extends AbstractController
         return $this->render('voucher/addFidelity.html.twig', [
             'card' => $card,
         ]);
+    }*/
+
+
     }
 }

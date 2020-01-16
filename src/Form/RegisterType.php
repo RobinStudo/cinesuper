@@ -36,6 +36,8 @@ class RegisterType extends AbstractType
             ])
             ->add('birthdate', DateType::class, [
                 'label' => "Date de naissance",
+                'years' => range(date('Y') - 6, date('Y') - 100),
+                'months' => range(date('m'), 12),
                 "attr" => [
                     'class' => "form-control",
                 ],

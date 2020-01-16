@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    {{ encore_entry_link_tags('upFidelity') }}
+{% endblock %}
+
+
+{% block title %}Add Fidelity - {{ parent() }}{% endblock %}
+
+{% block body %}
+    <div id="mainContainer">
+        <h2>Combien de places souhaitez vous ajouter ?</h2>
+
+        <div class="row alert alert-info">
+            Nom : {{card.user.lastName }}<br>
+            Prenom : {{ card.user.firstName }}<br>
+            Nombre de place(s) actuelle(s) : {{ card.fidelity }}
+        </div>
+
+        <div class="row alert alert-warning">
+            <form method="POST">
+                <div>
+                    <label for="ticketNumber">Nombres de place(s) à ajouter :</label>
+                    <input type="text" class="form-controlmb-3" id="ticketNumber" name="ticketNumber">
+                    <div id="slider"></div>
+                    <div id="sliderValue"></div>
+                </div>
+
+                <button type="submit" class="btn btn-success">Ajouter</button>
+
+                <a href="{{ path('easyadmin')}}" class="btn btn-success">Retour à l'accueil</a>
+            </form>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ encore_entry_script_tags('upFidelity') }}
+{% endblock %}

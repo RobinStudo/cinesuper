@@ -6,13 +6,14 @@ if (!Encore.isRuntimeEnvironmentConfigured()) {
 
 Encore
     .setOutputPath('public/build/')
-    .setPublicPath('build')
+    .setPublicPath('/build')
     .addEntry('app', './assets/js/app.js')
     .addEntry('register', './assets/js/components/register.js')
     .addEntry('dashboard', './assets/js/components/dashboard.js')
     .addEntry('resetPassword', './assets/js/components/resetPassword.js')
     .addEntry('renewPassword', './assets/js/components/renewPassword.js')
     .addEntry('login', './assets/js/components/login.js')
+    .addEntry('upFidelity', './assets/js/components/upFidelity.js')
     .splitEntryChunks()
     .enableSingleRuntimeChunk()
     .cleanupOutputBeforeBuild()

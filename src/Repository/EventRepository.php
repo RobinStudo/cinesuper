@@ -36,6 +36,18 @@ class EventRepository extends ServiceEntityRepository
     }
     */
 
+    public function findByDate()
+    {
+        $today = new \DateTime();
+
+        return $this->createQueryBuilder('e')
+            ->andWhere('e.startAt = :now')
+            ->setParameter(':now', $today->format('Y-m-d'))
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
     /*
     public function findOneBySomeField($value): ?Event
     {

@@ -31,6 +31,11 @@ class Event
      */
     private $endAt;
 
+    /**
+     * @ORM\Column(type="decimal", precision=10, scale=0)
+     */
+    private $multiplicateur;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -68,6 +73,18 @@ class Event
     public function setEndAt(\DateTimeInterface $endAt): self
     {
         $this->endAt = $endAt;
+
+        return $this;
+    }
+
+    public function getMultiplicateur(): ?string
+    {
+        return $this->multiplicateur;
+    }
+
+    public function setMultiplicateur(string $multiplicateur): self
+    {
+        $this->multiplicateur = $multiplicateur;
 
         return $this;
     }

@@ -2,28 +2,25 @@
 
 namespace App\Controller;
 
-use App\Entity\Card;
-use App\Entity\Event;
 use App\Entity\User;
+use App\Entity\Event;
 use App\Entity\Voucher;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Routing\Annotation\Route;
+use App\Repository\EventRepository;
 use App\Service\MailerService;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Response;
 
 class VoucherController extends AbstractController
 {
     /**
      * @Route("/voucher/{id}", name="addFidelity")
      */
-<<<<<<< HEAD
-    public function vouchergenerate(Card $card, MailerService $mailerService, Request $request, Event $event)
-    {  
-=======
-    public function vouchergenerate(User $user, MailerService $mailerService, Request $request)
+    public function vouchergenerate(User $user, MailerService $mailerService, Request $request, EventRepository $eventRepository)
     {
         $card = $user->getCard();
->>>>>>> master
+
         if ($request->isMethod('POST'))
         {
             $em = $this->getDoctrine()->getManager();
@@ -31,49 +28,56 @@ class VoucherController extends AbstractController
             $card->setFidelity($card->getFidelity() + $request->request->get('ticketNumber'));
             $em->flush();
 
-            $begin = $event->startAt;
-            $end = $event->endAt;
+            $events = $eventRepository->findByDate();
+            $today = new \DateTime();
+            $multiplicateur = 1;
+            
+            // foreach($events as $event){
 
-            $interval = new \DateInterval('P1D');
-            $daterange = new \DatePeriod($begin, $interval ,$end);
-          
-            foreach($daterange as $date){
-                echo $date->format("Ymd") . "<br>";
+            //     if($today >= $event->getStartAt() && $today <= $event->getEndAt()) {
+                    
+            //     }
+            // }
+
+            if($events){
+                
+                $multiplicateur = $events[0]->getMultiplicateur();
             }
 
-            if($card->getFidelity() >= 10) 
-            { 
-                $nbplace = $card->getFidelity();
-                $nbVoucher = intdiv($nbplace,10);
-                $nbPlacesRestantes = $nbplace - $nbVoucher * 10;
+               
+            // if($card->getFidelity() >= 10) 
+            // { 
+            //     $nbplace = $card->getFidelity();
+            //     $nbVoucher = intdiv($nbplace,10);
+            //     $nbPlacesRestantes = $nbplace - $nbVoucher * 10;
 
-                for ($i=1; $i <= $nbVoucher; $i++)
-                {
-                    $voucher = new Voucher();
+            //     for ($i=1; $i <= $nbVoucher; $i++)
+            //     {
+            //         $voucher = new Voucher();
 
-                    // changer le type de serial number en chaine
-                    $serialNumber =$card->getUser()->getLastName().uniqid();
+            //         // changer le type de serial number en chaine
+            //         $serialNumber =$card->getUser()->getLastName().uniqid();
 
-                    $voucher->setSerial($serialNumber);
+            //         $voucher->setSerial($serialNumber);
 
-                    $voucher->setExpiredAt(new \DateTime( '6 months' ));
+            //         $voucher->setExpiredAt(new \DateTime( '6 months' ));
 
-                    // add voucher to Card
-                    $card->addVoucher($voucher);
-                    $card->setFidelity($nbPlacesRestantes);
+            //         // add voucher to Card
+            //         $card->addVoucher($voucher);
+            //         $card->setFidelity($nbPlacesRestantes);
 
-                    $em->persist($voucher);
-                    $em->persist($card);
-                    $em->flush();
-                }
+            //         $em->persist($voucher);
+            //         $em->persist($card);
+            //         $em->flush();
+            //     }
 
-                // instantiation send mail for free places
-                $email = $card->getUser()->getEmail();
+            //     // instantiation send mail for free places
+            //     $email = $card->getUser()->getEmail();
 
-                // mailerService
-                $mailerService->vouchergenerate($email, $nbVoucher);
-            }
-            return $this->redirectToRoute('easyadmin');
+            //     // mailerService
+            //     $mailerService->vouchergenerate($email, $nbVoucher);
+            // }
+            // return $this->redirectToRoute('easyadmin');
         }
 
         return $this->render('voucher/addFidelity.html.twig', [

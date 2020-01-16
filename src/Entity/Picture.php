@@ -126,4 +126,16 @@ class Picture implements \Serializable
     public function update() {
         $this->updatedAt = new \DateTimeImmutable();
     }
+
+    public function getUpdatedAt(): ?\DateTimeInterface
+    {
+        return $this->updatedAt;
+    }
+
+    public function setUpdatedAt(\DateTimeInterface $updatedAt): self
+    {
+        $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
 }

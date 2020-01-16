@@ -6,26 +6,13 @@ if (!Encore.isRuntimeEnvironmentConfigured()) {
 
 Encore
     .setOutputPath('public/build/')
-
-    // public path used by the web server to access the output path
-    .setPublicPath('build/')
-    // only needed for CDN's or sub-directory deploy
-    //.setManifestKeyPrefix('build/')
-
-    /*
-     * ENTRY CONFIG
-     *
-     * Add 1 entry for each "page" of your app
-     * (including one that's included on every page - e.g. "app")
-     *
-     * Each entry will result in one JavaScript file (e.g. app.js)
-     * and one CSS file (e.g. app.css) if your JavaScript imports CSS.
-     */
-
+    .setPublicPath('/build')
     .addEntry('app', './assets/js/app.js')
     .addEntry('register', './assets/js/components/register.js')
     .addEntry('dashboard', './assets/js/components/dashboard.js')
+    .addEntry('resetPassword', './assets/js/components/resetPassword.js')
     .addEntry('renewPassword', './assets/js/components/renewPassword.js')
+    .addEntry('login', './assets/js/components/login.js')
     .splitEntryChunks()
     .enableSingleRuntimeChunk()
     .cleanupOutputBeforeBuild()

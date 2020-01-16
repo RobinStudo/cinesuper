@@ -16,8 +16,14 @@ class VoucherController extends AbstractController
     /**
      * @Route("/voucher/{id}", name="addFidelity")
      */
+<<<<<<< HEAD
     public function vouchergenerate(Card $card, MailerService $mailerService, Request $request, Event $event)
     {  
+=======
+    public function vouchergenerate(User $user, MailerService $mailerService, Request $request)
+    {
+        $card = $user->getCard();
+>>>>>>> master
         if ($request->isMethod('POST'))
         {
             $em = $this->getDoctrine()->getManager();
@@ -35,8 +41,6 @@ class VoucherController extends AbstractController
                 echo $date->format("Ymd") . "<br>";
             }
 
-            
-
             if($card->getFidelity() >= 10) 
             { 
                 $nbplace = $card->getFidelity();
@@ -44,25 +48,25 @@ class VoucherController extends AbstractController
                 $nbPlacesRestantes = $nbplace - $nbVoucher * 10;
 
                 for ($i=1; $i <= $nbVoucher; $i++)
-                { 
+                {
                     $voucher = new Voucher();
-                        
-                    // changer le type de serial number en chaine 
+
+                    // changer le type de serial number en chaine
                     $serialNumber =$card->getUser()->getLastName().uniqid();
-        
+
                     $voucher->setSerial($serialNumber);
-        
+
                     $voucher->setExpiredAt(new \DateTime( '6 months' ));
-                    
+
                     // add voucher to Card
                     $card->addVoucher($voucher);
                     $card->setFidelity($nbPlacesRestantes);
-        
+
                     $em->persist($voucher);
                     $em->persist($card);
                     $em->flush();
                 }
-            
+
                 // instantiation send mail for free places
                 $email = $card->getUser()->getEmail();
 

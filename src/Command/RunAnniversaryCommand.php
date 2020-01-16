@@ -34,38 +34,26 @@ class RunAnniversaryCommand extends Command
     {
         $this
             ->setDescription('Add a short description for your command')
-            ->addArgument('arg1', InputArgument::OPTIONAL, 'Argument description')
-            ->addOption('option1', null, InputOption::VALUE_NONE, 'Option description')
         ;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
-        $arg1 = $input->getArgument('arg1');
-
-        if ($arg1) {
-            $io->note(sprintf('You passed an argument: %s', $arg1));
-        }
-
-        if ($input->getOption('option1')) {
-            // ...
-        }
 
         $users = $this->userRepository->findAll();
         $now = new \Datetime('now');
-       
-        
+
         foreach ($users as $user)
         {
-            if ( $now->format('d/m/Y') === $user->getBirthdate()->format('d/m/Y')) 
-            {   
+            if ( $now->format('d/m/Y') === $user->getBirthdate()->format('d/m/Y'))
+            {
                 // Generation du voucher pour l'anniversaire de l'utilisateur
                 $voucher = new Voucher;
                 $serialNumber = $user->getLastName().uniqid();
-    
+
                 $voucher->setSerial($serialNumber);
-                $voucher->setCard($user->getCard());    
+                $voucher->setCard($user->getCard());
                 $voucher->setExpiredAt(new \DateTime( '6 months' ));
 
                 $this->em->persist($voucher);

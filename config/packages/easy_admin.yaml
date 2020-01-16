@@ -78,8 +78,8 @@ easy_admin:
                 item_permission: 'ROLE_ADMIN'
 
         Product:
-            class: App\Entity\Voucher
-            label: Voucher
+            class: App\Entity\Gift
+            label: Gift
             edit:
                 item_permission: 'ROLE_ADMIN'
             new:

@@ -11,10 +11,10 @@
     <div id="mainContainer">
         <h2>Combien de places souhaitez vous ajouter ?</h2>
 
-        <div class="row alert alert-info">
-            Nom : {{card.user.lastName }}<br>
-            Prenom : {{ card.user.firstName }}<br>
-            Nombre de place(s) actuelle(s) : {{ card.fidelity }}
+        <div class=" alert alert-info">
+            Nom : <span class="userIdentity">{{card.user.lastName }}</span>.<br>
+            Prenom : <span class="userIdentity">{{ card.user.firstName }}</span>.<br>
+            Cet utilisateur a déjà acheté : {{ card.fidelity }} place(s).
         </div>
 
         <div class="row alert alert-warning">

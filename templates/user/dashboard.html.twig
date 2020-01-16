@@ -25,53 +25,83 @@
         {% endif %}
     </div>
 
+
     <section id="restContent">
-<div class="container">
-    <div class="dash mt-5 ml-5">
-        <div class="row text-center">
-            <div class="col-6">
-                <div class="card" style="width: 18rem;">
-                    <div class="card-body">
-                      <h5 class="card-title text-primary">Nom</h5>
-                      <h6 class="card-subtitle mb-2 text-muted">{{app.user.lastName }}</h6>
+        <div class="container">
+            <h3 id="infoTitle">Vos informations personnelles :</h3>
+            <div class="dash">
+                <div class="row text-center">
+                    <div class="col-6 flex-column">
+                        <div class="card">
+                            <div class="card-body">
+                            <h5 class="card-title text-primary">Nom</h5>
+                            <h6 class="card-subtitle mb-2 text-muted">{{app.user.lastName }}</h6>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-body">
+                            <h5 class="card-title text-primary">Prénom</h5>
+                            <h6 class="card-subtitle mb-2 text-muted">{{app.user.firstName }}</h6>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-body">
+                            <h5 class="card-title text-primary">Email</h5>
+                            <h6 class="card-subtitle mb-2 text-muted">{{app.user.email}}</h6>
+                            </div>
+                        </div>
                     </div>
-                </div>
-                <div class="card" style="width: 18rem;">
-                    <div class="card-body">
-                      <h5 class="card-title text-primary">Prénom</h5>
-                      <h6 class="card-subtitle mb-2 text-muted">{{app.user.firstName }}</h6>
-                    </div>
-                </div>
-                <div class="card" style="width: 18rem;">
-                    <div class="card-body">
-                      <h5 class="card-title text-primary">Email</h5>
-                      <h6 class="card-subtitle mb-2 text-muted">{{app.user.email}}</h6>
+                    <div class="col-6">
+                        <div class="card">
+                            <div class="card-body">
+                            <h5 class="card-title text-primary">Carte de fidelité créée le :</h5>
+                            <h6 class="card-subtitle mb-2 text-muted">{{app.user.createdAt|date('d/m/Y')}}</h6>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-body">
+                            <h5 class="card-title text-primary">Numéro de carte</h5>
+                            <h6 class="card-subtitle mb-2 text-muted">{{app.user.card.number}}</h6>
+                            </div>
+                        </div>
+                        {% set nbVoucher = app.user.card.vouchers|length %}
+                        <div class="card">
+                            <div class="card-body">
+                            <h5 class="card-title text-primary">Voucher</h5>
+                            <h6 class="card-subtitle mb-2 text-muted">{{ nbVoucher }}</h6>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="col-6">
-                <div class="card" style="width: 18rem;">
-                    <div class="card-body">
-                      <h5 class="card-title text-primary">Carte de fidelité créée le :</h5>
-                      <h6 class="card-subtitle mb-2 text-muted">{{app.user.createdAt|date('d/m/Y')}}</h6>
-                    </div>
-                </div>
-                <div class="card" style="width: 18rem;">
-                    <div class="card-body">
-                      <h5 class="card-title text-primary">Numéro de carte</h5>
-                      <h6 class="card-subtitle mb-2 text-muted">{{app.user.card.number}}</h6>
-                    </div>
-                </div>
-                <div class="card" style="width: 18rem;">
-                    <div class="card-body">
-                      <h5 class="card-title text-primary">Voucher</h5>
-                      <h6 class="card-subtitle mb-2 text-muted">{{app.user.card.vouchers|length}}</h6>
-                    </div>
-                </div>
-            </div>
+
+            <h3 id="voucherTitle">Vos places gratuites :</h3>
+            {% if nbVoucher > 0 %}
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Numéro</th>
+                        <th scope="col">Date d'expiration</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for voucher in app.user.card.vouchers %}
+                    <tr>
+                        <th scope="row">{{ loop.index }}</th>
+                        <td> {{ voucher.serial }}</td>
+                        <td>{{ voucher.expiredAt|date('d/m/Y')}}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            {% else %}
+            <p id="voucherInfo">
+                Vous n'avez pas de place gratuite pour le moment.<br>
+                Vous aurez une place gratuite toutes les 10 places achetées.
+            </p>
+            {% endif %}
         </div>
-    </div>
-</div>
     </section>
 {% endblock %}
 

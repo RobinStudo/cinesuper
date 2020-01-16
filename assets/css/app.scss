@@ -15,13 +15,22 @@ main{
     flex-direction: column;
 }
 
+.dropdown-toggle, .nav-link#connectLink {
+    font-size: 1.2em !important;
+}
+
 .navbar-primary{
     background-color: $primary!important;
 
-    .navbar-brand{
+    .navbar-brand, .nav-link{
         font-size: 1.8rem;
         color: $light;
     }
+}
+
+.avatar-mini{
+    max-width: 24px;
+    min-width: 24px;
 }
 
 footer{
@@ -31,7 +40,19 @@ footer{
     text-align: center;
 }
 
+// --- Header ---
+
+.navbar-toggler-icon {
+    display: flex;
+    color: white
+}
+
+.svg-inline--fa {
+    margin: auto;
+}
+
 // --- Home ---
+
 .landing{
     width: 100%;
     flex-grow: 1;

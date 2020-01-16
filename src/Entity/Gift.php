@@ -33,6 +33,11 @@ class Gift
      */
     private $giftType;
 
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $expiredAt;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -71,11 +76,32 @@ class Gift
     {
         $this->giftType = $giftType;
 
+        $this->setExpiredAt($giftType->getDuration());
+
         return $this;
     }
 
     public function __toString()
     {
         return $this->serial;
+    }
+
+    public function getExpiredAt(): ?\DateTimeInterface
+    {
+        return $this->expiredAt;
+    }
+
+    public function setExpiredAt($duration): self
+    {
+        $now = new \DateTime();
+
+        $willExpireIn = new \DateInterval("P0D");
+        $willExpireIn->days = $duration;
+
+        $now->add($willExpireIn);
+
+        $this->expiredAt = $now ;
+
+        return $this;
     }
 }

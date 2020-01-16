@@ -97,23 +97,23 @@ class Card
         return $this->gifts;
     }
 
-    public function addGift(Gift $voucher): self
+    public function addGift(Gift $gift): self
     {
-        if (!$this->gifts->contains($voucher)) {
-            $this->gifts[] = $voucher;
-            $voucher->setCard($this);
+        if (!$this->gifts->contains($gift)) {
+            $this->gifts[] = $gift;
+            $gift->setCard($this);
         }
 
         return $this;
     }
 
-    public function removeGift(Gift $voucher): self
+    public function removeGift(Gift $gift): self
     {
-        if ($this->gifts->contains($voucher)) {
-            $this->gifts->removeElement($voucher);
+        if ($this->gifts->contains($gift)) {
+            $this->gifts->removeElement($gift);
             // set the owning side to null (unless already changed)
-            if ($voucher->getCard() === $this) {
-                $voucher->setCard(null);
+            if ($gift->getCard() === $this) {
+                $gift->setCard(null);
             }
         }
 

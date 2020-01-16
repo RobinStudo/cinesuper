@@ -5,6 +5,7 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\GiftTypeRepository")
@@ -29,9 +30,18 @@ class GiftType
     private $description;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="integer")
+     * @Assert\Range(
+     *     min="1",
+     *     minMessage="L'évènement doit durer au moins une journée."
+     * )
      */
-    private $expiredAt;
+    private $duration;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $fidelityCost;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Gift", mappedBy="giftType", orphanRemoval=true)
@@ -72,18 +82,6 @@ class GiftType
         return $this;
     }
 
-    public function getExpiredAt(): ?\DateTimeInterface
-    {
-        return $this->expiredAt;
-    }
-
-    public function setExpiredAt(\DateTimeInterface $expiredAt): self
-    {
-        $this->expiredAt = $expiredAt;
-
-        return $this;
-    }
-
     /**
      * @return Collection|Gift[]
      */
@@ -111,6 +109,30 @@ class GiftType
                 $gift->setGiftType(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getFidelityCost(): ?int
+    {
+        return $this->fidelityCost;
+    }
+
+    public function setFidelityCost(int $fidelityCost): self
+    {
+        $this->fidelityCost = $fidelityCost;
+
+        return $this;
+    }
+
+    public function getDuration(): ?int
+    {
+        return $this->duration;
+    }
+
+    public function setDuration(int $duration): self
+    {
+        $this->duration = $duration;
 
         return $this;
     }

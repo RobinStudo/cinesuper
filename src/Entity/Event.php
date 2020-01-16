@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\EventRepository")
@@ -17,7 +18,14 @@ class Event
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=80)
+     * @Assert\Length(
+     *     min=3,
+     *     max=80,
+     *     minMessage="Le nom de l'évènement doit faire au moins {{ limit }} caractères.",
+     *     maxMessage="Le nom de l'évènement ne peut dépasser {{ limit }} caractères."
+     * )
+     * @Assert\NotBlank()
      */
     private $name;
 
@@ -32,12 +40,20 @@ class Event
     private $startAt;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="integer")
+     * @Assert\Range(
+     *     min="1",
+     *     minMessage="La durée de l'évènement doit au moins être égale à un jour."
+     * )
      */
-    private $endAt;
+    private $duration;
 
     /**
      * @ORM\Column(type="decimal", precision=10, scale=0)
+     * @Assert\Range(
+     *     min="1,1",
+     *     minMessage="Le multiplicateur doit être un chiffre et être au moins égal à 1,1."
+     * )
      */
     private $multiplicateur;
 
@@ -82,14 +98,14 @@ class Event
         return $this;
     }
 
-    public function getEndAt(): ?\DateTimeInterface
+    public function getDuration()
     {
-        return $this->endAt;
+        return $this->duration;
     }
 
-    public function setEndAt(\DateTimeInterface $endAt): self
+    public function setDuration($duration): self
     {
-        $this->endAt = $endAt;
+        $this->duration = $duration;
 
         return $this;
     }

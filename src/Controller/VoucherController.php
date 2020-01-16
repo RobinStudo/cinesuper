@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Card;
+use App\Entity\Event;
 use App\Entity\User;
 use App\Entity\Voucher;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -15,7 +16,7 @@ class VoucherController extends AbstractController
     /**
      * @Route("/voucher/{id}", name="addFidelity")
      */
-    public function vouchergenerate(Card $card, MailerService $mailerService, Request $request)
+    public function vouchergenerate(Card $card, MailerService $mailerService, Request $request, Event $event)
     {  
         if ($request->isMethod('POST'))
         {
@@ -23,6 +24,18 @@ class VoucherController extends AbstractController
 
             $card->setFidelity($card->getFidelity() + $request->request->get('ticketNumber'));
             $em->flush();
+
+            $begin = $event->startAt;
+            $end = $event->endAt;
+
+            $interval = new \DateInterval('P1D');
+            $daterange = new \DatePeriod($begin, $interval ,$end);
+          
+            foreach($daterange as $date){
+                echo $date->format("Ymd") . "<br>";
+            }
+
+            
 
             if($card->getFidelity() >= 10) 
             { 
@@ -63,4 +76,6 @@ class VoucherController extends AbstractController
             'card' => $card,
         ]);
     }
+
+    
 }

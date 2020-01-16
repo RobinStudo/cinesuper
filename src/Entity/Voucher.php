@@ -72,4 +72,8 @@ class Voucher
 
         return $this;
     }
+    public function __toString()
+    {
+        return $this->serial;
+    }
 }

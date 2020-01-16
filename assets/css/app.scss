@@ -15,7 +15,7 @@ main{
     flex-direction: column;
 }
 
-.dropdown-toggle {
+.dropdown-toggle, .nav-link#connectLink {
     font-size: 1.2em !important;
 }
 
@@ -38,6 +38,11 @@ footer{
     color: $light;
     padding: 10px;
     text-align: center;
+}
+
+.alert {
+    text-align: center;
+    margin: 0;
 }
 
 // --- Header ---

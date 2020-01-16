@@ -9,7 +9,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use App\Service\MailerService;
 use Symfony\Component\HttpFoundation\Request;
 
-class FidelityController extends AbstractController
+class AdminController extends AbstractController
 {
     /**
      * @Route("/fidelityup/{id}", name="addFidelity")
@@ -35,5 +35,9 @@ class FidelityController extends AbstractController
         return $this->render('fidelity/addFidelity.html.twig', [
             'card' => $card,
         ]);
+    }
+
+    public function createEvent() {
+        
     }
 }

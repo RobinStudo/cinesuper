@@ -3,6 +3,7 @@ namespace App\Form;
 
 use App\Entity\User;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
@@ -34,7 +35,7 @@ class RegisterType extends AbstractType
                     'class' => "form-control",
                 ],
             ])
-            ->add('birthdate', DateType::class, [
+            ->add('birthdate', BirthdayType::class, [
                 'label' => "Date de naissance",
                 'years' => range(date('Y') - 6, date('Y') - 100),
                 'months' => range(date('m'), 12),

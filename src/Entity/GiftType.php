@@ -6,6 +6,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Constraints;
+use App\Entity\Gift;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\GiftTypeRepository")
@@ -33,13 +35,16 @@ class GiftType
      * @ORM\Column(type="integer")
      * @Assert\Range(
      *     min="1",
-     *     minMessage="L'évènement doit durer au moins une journée."
+     *     minMessage="L'évènement doit durer au moins une journée.",
+     *     
      * )
+     * 
      */
     private $duration;
 
     /**
      * @ORM\Column(type="integer")
+     * @Assert\GreaterThanOrEqual("0")
      */
     private $fidelityCost;
 
@@ -47,10 +52,11 @@ class GiftType
      * @ORM\OneToMany(targetEntity="App\Entity\Gift", mappedBy="giftType", orphanRemoval=true)
      */
     private $gifts;
-
+    
     public function __construct()
     {
         $this->gifts = new ArrayCollection();
+
     }
 
     public function getId(): ?int

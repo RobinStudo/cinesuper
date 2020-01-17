@@ -5,9 +5,16 @@ namespace App\Service;
 use App\Entity\Card;
 use App\Entity\User;
 
+/**
+ * Class UserService
+ * @package App\Service
+ */
 class UserService{
 
-    public function generateToken( User $user ){
+    /**
+     * @param User $user
+     */
+    public function generateToken(User $user ){
         $token = bin2hex( random_bytes( 64 ) );
         $expire = new \DateTime( '1 day' );
 
@@ -15,13 +22,20 @@ class UserService{
         $user->setTokenExpire( $expire );
     }
 
-    public function resetToken( User $user)
+    /**
+     * @param User $user
+     */
+    public function resetToken(User $user)
     {
         $user->setToken(null);
         $user->setTokenExpire(null);
     }
 
-    public function generateCard( User $user ): Card{
+    /**
+     * @param User $user
+     * @return Card
+     */
+    public function generateCard(User $user ): Card{
         $card = new Card();
         $number = time() . mt_rand( 1000, 9999 );
         $card->setNumber( $number );

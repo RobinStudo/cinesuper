@@ -1,0 +1,36 @@
+{%  extends "layout.html.twig" %}
+
+{% block stylesheets %}
+    {{ encore_entry_link_tags("spendFidelity") }}
+{% endblock %}
+
+{% block title %}Dépensez vos points de fidélité - {{ parent() }}{% endblock %}
+
+{% block content %}
+    {% if giftTypes %}
+        <table class="table mt-5 text-center">
+            <thead>
+            <tr>
+                <th class="giftTitles align-content-center" scope="col"><p>Type</p></th>
+                <th class="giftTitles align-content-center" scope="col"><p>Description</p></th>
+                <th class="giftTitles align-content-center" scope="col"><p>Points de fidélité requis</p></th>
+                <th class="giftTitles align-content-center" scope="col"><p>Durée de validité</p></th>
+                <th class="giftTitles align-content-center" scope="col"><p>Selection</p></th>
+            </tr>
+            </thead>
+            {% for giftType in giftTypes %}
+                <tr>
+                    <td><p>{{ giftType.name }}</p></td>
+                    <td><p>{{ giftType.description }}</p></td>
+                    <td><p>{{ giftType.fidelityCost }}</p></td>
+                    <td><p>{{ giftType.duration }} jours</p></td>
+                    <td><a href="{{ path("giveGift", {id : giftType.id}) }}"  type="submit" class="spendFidelityPointsButton">Choisir</a></td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% endif %}
+{% endblock %}
+
+{% block javascripts %}
+    {{ encore_entry_script_tags("spendFidelity") }}
+{% endblock %}

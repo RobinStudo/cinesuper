@@ -12,6 +12,7 @@ Encore
     .addEntry('dashboard', './assets/js/components/dashboard.js')
     .addEntry('resetPassword', './assets/js/components/resetPassword.js')
     .addEntry('renewPassword', './assets/js/components/renewPassword.js')
+    .addEntry('spendFidelity', './assets/js/components/spendFidelity.js')
     .addEntry('login', './assets/js/components/login.js')
     .addEntry('upFidelity', './assets/js/components/upFidelity.js')
     .splitEntryChunks()

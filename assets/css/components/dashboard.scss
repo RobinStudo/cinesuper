@@ -8,7 +8,7 @@ body {
 
 main {
     position: relative;
-    padding: 40px 0;
+    padding-top: 30px;
     box-sizing: border-box;
 }
 
@@ -113,7 +113,7 @@ main {
 
 /* ----------------------- REST ----------------------- */
 
-#infoTitle, #voucherTitle, #voucherInfo {
+#infoTitle, #voucherInfo {
     text-align: center;
 }
 
@@ -122,19 +122,9 @@ main {
     margin: auto;
 }
 
-#voucherTitle {
-    font-size: 1.3em;
-    margin: 60px 0 10px;
-    text-decoration: underline;
-}
-
 #voucherInfo {
     margin: 0;
     font-size: 0.9em;
-}
-
-.dash {
-    margin-top: 35px;
 }
 
 /* ----------------------- RESPONSIVE ----------------------- */

@@ -38,9 +38,15 @@ class Card
      */
     private $vouchers;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\GiftCard", mappedBy="cards", orphanRemoval=true)
+     */
+    private $giftCards;
+
     public function __construct()
     {
         $this->vouchers = new ArrayCollection();
+        $this->giftCards = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -124,4 +130,36 @@ class Card
     {
         return $this->number;
     }
+
+    /**
+     * @return Collection|GiftCard[]
+     */
+    public function getGiftCards(): Collection
+    {
+        return $this->giftCards;
+    }
+
+    public function addGiftCard(GiftCard $giftCard): self
+    {
+        if (!$this->giftCards->contains($giftCard)) {
+            $this->giftCards[] = $giftCard;
+            $giftCard->setCards($this);
+        }
+
+        return $this;
+    }
+
+    public function removeGiftCard(GiftCard $giftCard): self
+    {
+        if ($this->giftCards->contains($giftCard)) {
+            $this->giftCards->removeElement($giftCard);
+            // set the owning side to null (unless already changed)
+            if ($giftCard->getCards() === $this) {
+                $giftCard->setCards(null);
+            }
+        }
+
+        return $this;
+    }
+
 }

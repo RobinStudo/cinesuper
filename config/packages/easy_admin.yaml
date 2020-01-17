@@ -87,6 +87,17 @@ easy_admin:
             delete:
                 item_permission: 'ROLE_ADMIN'
 
+        Orders:     
+            class: App\Entity\Gift
+            label: Cadeaux
+            edit:
+                item_permission: 'ROLE_ADMIN'
+            new:
+                item_permission: 'ROLE_ADMIN'
+            delete:
+                item_permission: 'ROLE_ADMIN'
+
+
     site_name: 'Cinesuper'
     design:
         brand_color: '#e67e22'
@@ -94,3 +105,4 @@ easy_admin:
             - { entity: 'Customer', icon: 'user' }
             - { entity: 'Order', icon: 'id-card' }
             - { entity: 'Product', icon: 'gift' }
+            - { entity: 'Orders', icon: 'gift' }

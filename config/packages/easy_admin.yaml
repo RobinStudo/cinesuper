@@ -18,6 +18,7 @@ easy_admin:
                       label: Email
                     - property: birthdate
                       label: Date de naissance
+                      type: date
                     - property: roles
                       label: Roles
                 actions:
@@ -78,22 +79,71 @@ easy_admin:
                 item_permission: 'ROLE_ADMIN'
 
         Product:
-            class: App\Entity\Voucher
-            label: Voucher
+            class: App\Entity\Event
+            label: Event
             edit:
                 item_permission: 'ROLE_ADMIN'
             new:
                 item_permission: 'ROLE_ADMIN'
             delete:
                 item_permission: 'ROLE_ADMIN'
-
+            list:
+                fields:
+                    - property: title
+                      label: Titre
+                    - property: multiplicator
+                      label: Multiplieur
+                    - property: start_event
+                      label: Date de début
+                      type: date
+                    - property: end_event
+                      label: Date de fin
+                      type: date
+            form:
+                label: Event
+                form_options: { validation_groups: [] }
+                fields:
+                    - property: title
+                      label: Titre
+                    - property: multiplicator
+                      label: Multiplieur
+                    - property: start_event
+                      type: date
+                      label: Date de début
+                      type_options:
+                        widget: single_text
+                    - property: end_event
+                      type: date
+                      label: Date de fin
+                      type_options:
+                        widget: single_text
         Orders:     
             class: App\Entity\Gift
             label: Cadeaux
-            edit:
+            list:
+                fields:
+                    - property: title
+                      label: Titre
+                    - property: nb_fidelity
+                      label: Points de fidélité
+                    - property: picture
+                      label: Image
+                      type: image
+                      base_path: '/gifts/'
+            form:
                 item_permission: 'ROLE_ADMIN'
-            new:
-                item_permission: 'ROLE_ADMIN'
+                label: Cadeaux
+                form_options: { validation_groups: [] }
+                fields:
+                    - property: title
+                      label: Titre
+                    - property: nb_fidelity
+                      label: Points de fidélité
+                    - property: picture
+                      label: Image
+                      type: file_upload
+                      type_options:
+                          upload_dir: public/gifts/
             delete:
                 item_permission: 'ROLE_ADMIN'
 
@@ -104,5 +154,5 @@ easy_admin:
         menu:
             - { entity: 'Customer', icon: 'user' }
             - { entity: 'Order', icon: 'id-card' }
-            - { entity: 'Product', icon: 'gift' }
+            - { entity: 'Product', icon: 'calendar-alt' }
             - { entity: 'Orders', icon: 'gift' }

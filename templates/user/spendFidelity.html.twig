@@ -24,7 +24,7 @@
                     <td><p>{{ giftType.description }}</p></td>
                     <td><p>{{ giftType.fidelityCost }}</p></td>
                     <td><p>{{ giftType.duration }} jours</p></td>
-                    <td><a href='{{ app.request.uri ~ "?id=" ~ giftType.id }}'  type="submit" class="spendFidelityPointsButton">Choisir</a></td>
+                    <td><a href="{{ path("giveGift", {id : giftType.id}) }}"  type="submit" class="spendFidelityPointsButton">Choisir</a></td>
                 </tr>
             {% endfor %}
         </table>

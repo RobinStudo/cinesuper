@@ -25,7 +25,6 @@
         {% endif %}
     </div>
 
-
     <section id="restContent">
         <div class="container">
             <h3 id="infoTitle">Vos informations personnelles :</h3>
@@ -78,11 +77,12 @@
             <h3 id="voucherTitle">Vos cadeaux en cours :</h3>
 
             {% if app.user.card.gifts.count > 0 %}
-            <table class="table">
+            <table class="table mt-5">
                 <thead>
                     <tr>
                         <th scope="col">#</th>
                         <th scope="col">Numéro</th>
+                        <th scope="col">Type</th>
                         <th scope="col">Date d'expiration</th>
                     </tr>
                 </thead>
@@ -91,7 +91,7 @@
                     <tr>
                         <th scope="row">{{ loop.index }}</th>
                         <td> {{ gift.serial }}</td>
-                        <td>{{ gift.giftType }}</td>
+                        <td>{{ gift.giftType.name }}</td>
                         <td>{{ gift.expiredAt|date('d/m/Y')}}</td>
                     </tr>
                 {% endfor %}

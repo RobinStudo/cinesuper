@@ -1,11 +1,14 @@
 <?php
 namespace App\Controller;
 
+use App\Entity\Gift;
+use App\Entity\GiftType;
 use App\Entity\Picture;
 use App\Form\PictureType;
 use App\Form\RenewPasswordType;
 use App\Repository\GiftTypeRepository;
 use App\Repository\UserRepository;
+use App\Service\GiftService;
 use App\Service\PictureService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use App\Entity\User;
@@ -22,7 +25,6 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\Generator\UrlGenerator;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 class UserController extends AbstractController
 {
@@ -281,7 +283,6 @@ class UserController extends AbstractController
 
     /**
      * @Route("dashboard/renewpassword", name="renew_password", methods={"GET", "POST"})
-     * @isGranted("ROLE_USER")
      * @param Request $request
      * @param RenewPasswordType $renewPasswordType
      * @param UserRepository $userRepository
@@ -321,18 +322,53 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("dashboard/spendFidelity?{id}", name="spendFidelity", methods= {"GET", "POST"})
-     * @IsGranted("ROLE_USER")
-     * @param Request $request
+     * @Route("dashboard/spendFidelity", name="spendFidelity", methods= {"GET"})
      * @param GiftTypeRepository $giftTypeRepository
      * @return Response
      */
-    public function spendFidelity(Request $request, GiftTypeRepository $giftTypeRepository)
+    public function spendFidelity(GiftTypeRepository $giftTypeRepository)
     {
         $giftTypes = $giftTypeRepository->findAll();
 
         return $this->render("user/spendFidelity.html.twig", [
             "giftTypes" => $giftTypes,
         ]);
+    }
+
+    /**
+     * @Route("dashboard/giveGift/{id}", name="giveGift")
+     * @param GiftType $giftType
+     * @param GiftService $giftService
+     * @return RedirectResponse
+     */
+    public function giveGift(GiftType $giftType, GiftService $giftService)
+    {
+        $user = $this->getUser();
+        $userCard = $user->getCard();
+
+        $newFidelityPoints = ($userCard->getFidelity() - $giftType->getFidelityCost());
+
+        if ($newFidelityPoints <= 0) {
+            $this->addFlash("warning", "Vous n'avez malheureusement pas assez de points de fidélité pour ce cadeau :(.");
+
+            return $this->redirectToRoute("dashboard");
+        }
+
+        $gift = new Gift();
+
+        $gift->setGiftType($giftType);
+
+        $userCard->addGift($gift);
+        $userCard->setFidelity($newFidelityPoints);
+        $giftService->generateSerial($user, $gift);
+
+        $em = $this
+            ->getDoctrine()
+            ->getManager();
+
+        $em->persist($gift);
+        $em->flush();
+
+        return $this->redirectToRoute("dashboard");
     }
 }

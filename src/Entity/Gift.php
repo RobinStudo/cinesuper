@@ -6,6 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\GiftRepository")
+ * @ORM\HasLifecycleCallbacks()
  */
 class Gift
 {
@@ -36,7 +37,17 @@ class Gift
     /**
      * @ORM\Column(type="datetime")
      */
+    private $createdAt;
+
+    /**
+     * @ORM\Column(type="datetime")
+     */
     private $expiredAt;
+
+    public function __construct()
+    {
+        $this->createdAt = new \DateTime();
+    }
 
     public function getId(): ?int
     {
@@ -76,8 +87,6 @@ class Gift
     {
         $this->giftType = $giftType;
 
-        $this->setExpiredAt($giftType->getDuration());
-
         return $this;
     }
 
@@ -91,16 +100,21 @@ class Gift
         return $this->expiredAt;
     }
 
-    public function setExpiredAt($duration): self
+    /**
+     * @ORM\PrePersist()
+     * @ORM\PreUpdate()
+     */
+    public function setExpiredAt(): self
     {
-        $now = new \DateTime();
+        $grantDate = new \DateTime($this->createdAt->format('Y-m-d H:i:s'));
 
-        $willExpireIn = new \DateInterval("P0D");
-        $willExpireIn->days = $duration;
+        $duration = $this->getGiftType()->getDuration();
 
-        $now->add($willExpireIn);
+        $interval = "+" . $duration . " day";
 
-        $this->expiredAt = $now ;
+        $grantDate->modify($interval);
+
+        $this->expiredAt = $grantDate;
 
         return $this;
     }

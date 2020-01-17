@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Service\EventService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -18,26 +19,27 @@ class AdminController extends AbstractController
      * @param Request $request
      * @return Response
      */
-    public function fidelityUp(User $user, MailerService $mailerService, Request $request)
+    public function fidelityUp(User $user, EventService $eventService, MailerService $mailerService, Request $request)
     {
         $card = $user->getCard();
 
-        if ($request->isMethod('POST')) {
+        if ($request->isMethod("POST")) {
             $em = $this
                 ->getDoctrine()
                 ->getManager();
 
-            $card->setFidelity($card->getFidelity() + $request->request->get('ticketNumber'));
+            $newsFidelityMultiplicator = $eventService->getMultiplicatorWhenEvent();
+
+            $earnedFidelityPoints = $request->request->get("ticketNumber") * $newsFidelityMultiplicator;
+
+            $card->setFidelity($card->getFidelity() + $earnedFidelityPoints);
 
             $em->flush();
         }
 
-        return $this->render('fidelity/addFidelity.html.twig', [
-            'card' => $card,
+        return $this->render("fidelity/addFidelity.html.twig", [
+            "card" => $card,
+            "newsFidelityMultiplicator" => $newsFidelityMultiplicator,
         ]);
-    }
-
-    public function createEvent() {
-        
     }
 }

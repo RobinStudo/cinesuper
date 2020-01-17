@@ -15,6 +15,7 @@ class AdminController extends AbstractController
     /**
      * @Route("/fidelityup/{id}", name="addFidelity")
      * @param User $user
+     * @param EventService $eventService
      * @param MailerService $mailerService
      * @param Request $request
      * @return Response
@@ -23,14 +24,15 @@ class AdminController extends AbstractController
     {
         $card = $user->getCard();
 
+        $multiplicator = $eventService->getMultiplicatorWhenEvent();
+
         if ($request->isMethod("POST")) {
             $em = $this
                 ->getDoctrine()
                 ->getManager();
 
-            $newsFidelityMultiplicator = $eventService->getMultiplicatorWhenEvent();
 
-            $earnedFidelityPoints = $request->request->get("ticketNumber") * $newsFidelityMultiplicator;
+            $earnedFidelityPoints = $request->request->get("ticketNumber") * $multiplicator;
 
             $card->setFidelity($card->getFidelity() + $earnedFidelityPoints);
 
@@ -39,7 +41,7 @@ class AdminController extends AbstractController
 
         return $this->render("fidelity/addFidelity.html.twig", [
             "card" => $card,
-            "newsFidelityMultiplicator" => $newsFidelityMultiplicator,
+            "multiplicator" => $multiplicator,
         ]);
     }
 }

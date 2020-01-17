@@ -1,11 +1,14 @@
 <?php
 namespace App\Controller;
 
+use App\Entity\Gift;
+use App\Entity\GiftType;
 use App\Entity\Picture;
 use App\Form\PictureType;
 use App\Form\RenewPasswordType;
-use App\Repository\PictureRepository;
+use App\Repository\GiftTypeRepository;
 use App\Repository\UserRepository;
+use App\Service\GiftService;
 use App\Service\PictureService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use App\Entity\User;
@@ -18,7 +21,6 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -76,6 +78,8 @@ class UserController extends AbstractController
 
     /**
      * @Route("/login", name="login")
+     * @param AuthenticationUtils $authenticationUtils
+     * @return Response
      */
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
@@ -162,10 +166,13 @@ class UserController extends AbstractController
      * @Route("/dashboard", name="dashboard", methods={"GET", "POST"})
      * @param Request $request
      * @param PictureService $pictureService
+     * @param GiftTypeRepository $giftTypeRepository
      * @return Response
      */
-    public function dashboard(Request $request, PictureService $pictureService)
+    public function dashboard(Request $request, PictureService $pictureService, GiftTypeRepository $giftTypeRepository)
     {
+        $giftTypes = $giftTypeRepository->findAll();
+
         $picture = new Picture();
 
         $avatarForm = $this->createForm(PictureType::class, $picture);
@@ -193,6 +200,7 @@ class UserController extends AbstractController
 
         return $this->render("user/dashboard.html.twig", [
             "avatarForm" => $avatarForm->createView(),
+            "giftTypes" => $giftTypes,
         ]);
     }
 
@@ -311,5 +319,56 @@ class UserController extends AbstractController
         return $this->render("user/changePassword.html.twig", [
             "form" => $form->createView(),
         ]);
+    }
+
+    /**
+     * @Route("dashboard/spendFidelity", name="spendFidelity", methods= {"GET"})
+     * @param GiftTypeRepository $giftTypeRepository
+     * @return Response
+     */
+    public function spendFidelity(GiftTypeRepository $giftTypeRepository)
+    {
+        $giftTypes = $giftTypeRepository->findAll();
+
+        return $this->render("user/spendFidelity.html.twig", [
+            "giftTypes" => $giftTypes,
+        ]);
+    }
+
+    /**
+     * @Route("dashboard/giveGift/{id}", name="giveGift")
+     * @param GiftType $giftType
+     * @param GiftService $giftService
+     * @return RedirectResponse
+     */
+    public function giveGift(GiftType $giftType, GiftService $giftService)
+    {
+        $user = $this->getUser();
+        $userCard = $user->getCard();
+
+        $newFidelityPoints = ($userCard->getFidelity() - $giftType->getFidelityCost());
+
+        if ($newFidelityPoints <= 0) {
+            $this->addFlash("warning", "Vous n'avez malheureusement pas assez de points de fidélité pour ce cadeau :(.");
+
+            return $this->redirectToRoute("dashboard");
+        }
+
+        $gift = new Gift();
+
+        $gift->setGiftType($giftType);
+
+        $userCard->addGift($gift);
+        $userCard->setFidelity($newFidelityPoints);
+        $giftService->generateSerial($user, $gift);
+
+        $em = $this
+            ->getDoctrine()
+            ->getManager();
+
+        $em->persist($gift);
+        $em->flush();
+
+        return $this->redirectToRoute("dashboard");
     }
 }

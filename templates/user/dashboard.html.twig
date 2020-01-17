@@ -64,19 +64,20 @@
                             <h6 class="card-subtitle mb-2 text-muted">{{app.user.card.number}}</h6>
                             </div>
                         </div>
-                        {% set fidelityPoints = app.user.card.fidelity|length %}
+
                         <div class="card">
                             <div class="card-body">
-                            <h5 class="card-title text-primary">Voucher</h5>
-                            <h6 class="card-subtitle mb-2 text-muted">{{ fidelityPoints }}</h6>
+                            <h5 class="card-title text-primary">Points de fidélité</h5>
+                            <h6 class="card-subtitle mb-2 text-muted">{{ app.user.card.fidelity}}</h6>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <h3 id="voucherTitle">Vos places gratuites :</h3>
-            {% if fidelityPoints > 0 %}
+            <h3 id="voucherTitle">Vos cadeaux en cours :</h3>
+
+            {% if app.user.card.gifts.count > 0 %}
             <table class="table">
                 <thead>
                     <tr>
@@ -86,21 +87,27 @@
                     </tr>
                 </thead>
                 <tbody>
-                {% for voucher in app.user.card.gifts %}
+                {% for gift in app.user.card.gifts %}
                     <tr>
                         <th scope="row">{{ loop.index }}</th>
-                        <td> {{ voucher.serial }}</td>
-                        <td>{{ voucher.expiredAt|date('d/m/Y')}}</td>
+                        <td> {{ gift.serial }}</td>
+                        <td>{{ gift.giftType }}</td>
+                        <td>{{ gift.expiredAt|date('d/m/Y')}}</td>
                     </tr>
                 {% endfor %}
                 </tbody>
             </table>
+
             {% else %}
             <p id="voucherInfo">
-                Vous n'avez pas de place gratuite pour le moment.<br>
-                Vous aurez une place gratuite toutes les 10 places achetées.
+                Vous n'avez aucun cadeau pour le moment.<br>
+                Dépensez vos points de fidélité pour en obtenir.
             </p>
             {% endif %}
+
+            <div class="mt-5" id="spendPointsLinkContainer">
+                <a id="spendPointsLink" href="{{ path("spendFidelity") }}">Dépensez vos points</a>
+            </div>
         </div>
     </section>
 {% endblock %}

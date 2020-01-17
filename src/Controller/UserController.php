@@ -4,7 +4,7 @@ namespace App\Controller;
 use App\Entity\Picture;
 use App\Form\PictureType;
 use App\Form\RenewPasswordType;
-use App\Repository\PictureRepository;
+use App\Repository\GiftTypeRepository;
 use App\Repository\UserRepository;
 use App\Service\PictureService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -18,11 +18,11 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\Generator\UrlGenerator;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 class UserController extends AbstractController
 {
@@ -76,6 +76,8 @@ class UserController extends AbstractController
 
     /**
      * @Route("/login", name="login")
+     * @param AuthenticationUtils $authenticationUtils
+     * @return Response
      */
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
@@ -162,10 +164,13 @@ class UserController extends AbstractController
      * @Route("/dashboard", name="dashboard", methods={"GET", "POST"})
      * @param Request $request
      * @param PictureService $pictureService
+     * @param GiftTypeRepository $giftTypeRepository
      * @return Response
      */
-    public function dashboard(Request $request, PictureService $pictureService)
+    public function dashboard(Request $request, PictureService $pictureService, GiftTypeRepository $giftTypeRepository)
     {
+        $giftTypes = $giftTypeRepository->findAll();
+
         $picture = new Picture();
 
         $avatarForm = $this->createForm(PictureType::class, $picture);
@@ -193,6 +198,7 @@ class UserController extends AbstractController
 
         return $this->render("user/dashboard.html.twig", [
             "avatarForm" => $avatarForm->createView(),
+            "giftTypes" => $giftTypes,
         ]);
     }
 
@@ -275,6 +281,7 @@ class UserController extends AbstractController
 
     /**
      * @Route("dashboard/renewpassword", name="renew_password", methods={"GET", "POST"})
+     * @isGranted("ROLE_USER")
      * @param Request $request
      * @param RenewPasswordType $renewPasswordType
      * @param UserRepository $userRepository
@@ -310,6 +317,22 @@ class UserController extends AbstractController
 
         return $this->render("user/changePassword.html.twig", [
             "form" => $form->createView(),
+        ]);
+    }
+
+    /**
+     * @Route("dashboard/spendFidelity?{id}", name="spendFidelity", methods= {"GET", "POST"})
+     * @IsGranted("ROLE_USER")
+     * @param Request $request
+     * @param GiftTypeRepository $giftTypeRepository
+     * @return Response
+     */
+    public function spendFidelity(Request $request, GiftTypeRepository $giftTypeRepository)
+    {
+        $giftTypes = $giftTypeRepository->findAll();
+
+        return $this->render("user/spendFidelity.html.twig", [
+            "giftTypes" => $giftTypes,
         ]);
     }
 }

@@ -37,6 +37,7 @@ class Event
 
     /**
      * @ORM\Column(type="datetime")
+     * @Assert\GreaterThanOrEqual("today")
      */
     private $startAt;
 
@@ -51,6 +52,7 @@ class Event
      *     min="1",
      *     minMessage="La durée de l'évènement doit au moins être égale à {{ limit }} jours."
      * )
+     * 
      */
     private $duration;
 
@@ -60,6 +62,7 @@ class Event
      *     min="2",
      *     minMessage="Le multiplicateur doit être un chiffre et être au moins égal à {{ limit }}."
      * )
+     * 
      */
     private $multiplicateur;
 

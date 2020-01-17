@@ -37,7 +37,7 @@ class EventService
     {
         $events = $this->eventRepository->findAll();
 
-        $multiplicator = 1;
+        $multiplicator = 0;
 
         if ($events) {
             forEach($events as $event) {
@@ -45,6 +45,9 @@ class EventService
                     $multiplicator += $event->getMultiplicateur();
                 }
             }
+        }
+        else {
+            $multiplicator = 1;
         }
 
         return $multiplicator;

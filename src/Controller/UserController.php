@@ -341,7 +341,7 @@ class UserController extends AbstractController
      * @param GiftService $giftService
      * @return RedirectResponse
      */
-    public function giveGift(GiftType $giftType, GiftService $giftService)
+    public function giveGift(GiftType $giftType, GiftService $giftService, MailerService $mailerService)
     {
         $user = $this->getUser();
         $userCard = $user->getCard();
@@ -368,6 +368,8 @@ class UserController extends AbstractController
 
         $em->persist($gift);
         $em->flush();
+
+        $mailerService->giftGenerate($user->getEmail(), $gift);
 
         return $this->redirectToRoute("dashboard");
     }

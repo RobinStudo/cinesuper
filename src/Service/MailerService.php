@@ -1,6 +1,7 @@
 <?php
 namespace App\Service;
 
+use App\Entity\Gift;
 use Swift_Mailer;
 use Swift_Message;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -12,12 +13,12 @@ class MailerService{
     private $urlGenerator;
     private $mailer;
 
-    public function __construct( UrlGeneratorInterface $urlGenerator, Swift_Mailer $mailer ){
+    public function __construct(UrlGeneratorInterface $urlGenerator, Swift_Mailer $mailer){
         $this->urlGenerator = $urlGenerator;
         $this->mailer = $mailer;
     }
 
-    public function sendActivationMail( User $user ){
+    public function sendActivationMail(User $user){
         $url = $this->urlGenerator->generate( 'user_activate', array(
             'token' => $user->getToken(),
         ), UrlGenerator::ABSOLUTE_URL);
@@ -27,7 +28,7 @@ class MailerService{
         $this->send( $user->getEmail(), $text );
     }
 
-    public function sendResetPassword( User $user)
+    public function sendResetPassword(User $user)
     {
         $url = $this->urlGenerator->generate('reset_password', array(
             'token' => $user->getToken(),
@@ -43,7 +44,7 @@ class MailerService{
         $this->send( $user->getEmail(), $text);
     }
 
-    private function send( $email, $text ){
+    private function send($email, $text){
         $message = new Swift_Message();
         $message->setFrom( 'no-reply@cinesuper.com' );
         $message->setTo( $email );
@@ -52,17 +53,15 @@ class MailerService{
         $this->mailer->send( $message );
     }
 
-    public function vouchergenerate($email, $nbVoucher)
+    public function giftGenerate($email, Gift $gift)
     {
-        //text for free places
-        $text = 'Bravo tu as ' . $nbVoucher. ' place gratuite(s).';
-        
-        //send mail
-        $this->send( $email, $text);
+        $text = 'Pour vous récompenser de votre fidélité, nous avons le plaisir de vous offrir : 1 ' . $gift->getGiftType()->getName() . ' !';
+
+        $this->send($email, $text);
     }
 
     public function sendAnniversary($email, $text)
     {
-        $this->send( $email, $text);
+        $this->send($email, $text);
     }
 }

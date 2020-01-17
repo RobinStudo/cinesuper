@@ -7,6 +7,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\EventRepository")
+ * @ORM\HasLifecycleCallbacks()
  */
 class Event
 {
@@ -40,19 +41,24 @@ class Event
     private $startAt;
 
     /**
+     * @ORM\Column(type="datetime")
+     */
+    private $endAt;
+
+    /**
      * @ORM\Column(type="integer")
      * @Assert\Range(
      *     min="1",
-     *     minMessage="La durée de l'évènement doit au moins être égale à un jour."
+     *     minMessage="La durée de l'évènement doit au moins être égale à {{ limit }} jours."
      * )
      */
     private $duration;
 
     /**
-     * @ORM\Column(type="decimal", precision=10, scale=0)
+     * @ORM\Column(type="integer")
      * @Assert\Range(
-     *     min="1,1",
-     *     minMessage="Le multiplicateur doit être un chiffre et être au moins égal à 1,1."
+     *     min="2",
+     *     minMessage="Le multiplicateur doit être un chiffre et être au moins égal à {{ limit }}."
      * )
      */
     private $multiplicateur;
@@ -98,24 +104,46 @@ class Event
         return $this;
     }
 
-    public function getDuration()
+    public function getDuration(): ?int
     {
         return $this->duration;
     }
 
-    public function setDuration($duration): self
+    public function setDuration(int $duration): self
     {
         $this->duration = $duration;
 
         return $this;
     }
 
-    public function getMultiplicateur(): ?string
+    public function getEndAt(): ?\DateTimeInterface
+    {
+        return $this->endAt;
+    }
+
+    /**
+     * @ORM\PrePersist()
+     * @ORM\PreUpdate()
+     */
+    public function setEndAt(): self
+    {
+        $dateOfEnd = new \DateTime($this->startAt->format('Y-m-d H:i:s'));
+
+        $interval = "+" . $this->duration . " day";
+
+        $dateOfEnd->modify($interval);
+
+        $this->endAt = $dateOfEnd;
+
+        return $this;
+    }
+
+    public function getMultiplicateur(): ?int
     {
         return $this->multiplicateur;
     }
 
-    public function setMultiplicateur(string $multiplicateur): self
+    public function setMultiplicateur(int $multiplicateur): self
     {
         $this->multiplicateur = $multiplicateur;
 

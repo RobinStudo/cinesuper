@@ -31,6 +31,15 @@
                 <a href="{{ path('easyadmin')}}" class="btn btn-success">Retour à l'accueil</a>
             </form>
         </div>
+        <div class="alert alert-success">
+            {% if newsFidelityMultiplicator > 1 %}
+                Il y a un ou des évènements en cours.<br>
+                Une place achetée offre <span id="multiplier">{{ newsFidelityMultiplicator }}</span> points de fidélité.
+            {% else %}
+                Il n'y a aucun évènement en cours.<br>
+                Une place achetée offre <span id="multiplier">un</span> point de fidélité.
+            {% endif %}
+        </div>
     </div>
 {% endblock %}
 

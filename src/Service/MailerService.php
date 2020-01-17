@@ -52,10 +52,10 @@ class MailerService{
         $this->mailer->send( $message );
     }
 
-    public function vouchergenerate($email, $nbVoucher)
+    public function vouchergenerate($email, $gift)
     {
         //text for free places
-        $text = 'Bravo tu as ' . $nbVoucher. ' place gratuite(s).';
+        $text = 'Bravo tu as reçu '.$gift.' à utiliser dans ton cinéma préféré !!!';
         
         //send mail
         $this->send( $email, $text);

@@ -28,7 +28,7 @@
 
     <section id="restContent">
         <div class="container">
-            <h3 id="infoTitle">Vos informations personnelles :</h3>
+            <h3 id="infoTitle" class="mb-3 mt-3">Vos informations personnelles :</h3>
             <div class="dash">
                 <div class="row text-center">
                     <div class="col-6 flex-column">
@@ -75,33 +75,38 @@
                 </div>
             </div>
 
-            <h3 id="voucherTitle">Vos places gratuites :</h3>
-            {% if nbVoucher > 0 %}
-            <table class="table">
+            <h3 class="text-center mt-3 mb-3">Historique des cadeaux :</h3>
+            {% if app.user.card.giftCards|length > 0 %}
+            <table class="table alert alert-light mb-4">
                 <thead>
                     <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">Numéro</th>
-                        <th scope="col">Date d'expiration</th>
+                        <th scope="col"><span class="text-primary">#</span></th>
+                        <th scope="col"><span class="text-primary">Cadeau</span></th>
+                        <th scope="col"><span class="text-primary">Serial</span></th>
+                        <th scope="col"><span class="text-primary">Utilisé</span></th>
+                        <th scope="col"><span class="text-primary">Date d'expiration</span></th>
                     </tr>
                 </thead>
                 <tbody>
-                {% for voucher in app.user.card.vouchers %}
+                {% for gift in app.user.card.giftCards %}
                     <tr>
                         <th scope="row">{{ loop.index }}</th>
-                        <td> {{ voucher.serial }}</td>
-                        <td>{{ voucher.expiredAt|date('d/m/Y')}}</td>
+                        <td>{{ gift.gifts.title }}</td>
+                        <td>{{ gift.serial }}</td>
+                        <td>{{ gift.used ? "OUI" : "NON"}}</td>
+                        <td>{{ gift.expiredAt|date('d/m/Y') }}</td>
                     </tr>
                 {% endfor %}
                 </tbody>
-            </table>
+            </table> 
             {% else %}
-            <p id="voucherInfo">
-                Vous n'avez pas de place gratuite pour le moment.<br>
-                Vous aurez une place gratuite toutes les 10 places achetées.
+            <p class="voucherInfo">
+                Vous n'avez pas de cadeaux pour le moment.
             </p>
             {% endif %}
         </div>
+
+
     </section>
 {% endblock %}
 

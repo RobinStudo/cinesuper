@@ -3,6 +3,7 @@ namespace App\Form;
 
 use App\Entity\User;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
@@ -16,31 +17,33 @@ class RegisterType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('firstName', TextType::class, [
+            ->add('FirstName', TextType::class, [
                 "label" => "Firstname",
                 "attr" => [
                     'class' => "form-control",
                 ],
             ])
-            ->add('lastName', TextType::class, [
+            ->add('LastName', TextType::class, [
                 "label" => "LastName",
                 "attr" => [
                     'class' => "form-control",
                 ],
             ])
-            ->add('email', EmailType::class, [
+            ->add('Email', EmailType::class, [
                 "label" => "Email",
                 "attr" => [
                     'class' => "form-control",
                 ],
             ])
-            ->add('birthdate', DateType::class, [
+            ->add('Birthdate', BirthdayType::class, [
                 'label' => "Date de naissance",
+                'years' => range(date('Y') - 6, date('Y') - 100),
+                'months' => range(date('m'), 12),
                 "attr" => [
                     'class' => "form-control",
                 ],
             ])
-            ->add('password', PasswordType::class, [
+            ->add('Password', PasswordType::class, [
                 "label" => "Password",
                 "constraints" => [
                     new Regex([

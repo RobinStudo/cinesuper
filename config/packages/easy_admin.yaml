@@ -4,46 +4,45 @@ easy_admin:
         time:     'H:i'
         datetime: 'd/m/Y H:i:s'
     entities:
-        # List the entity class name you want to manage
         Customer:
             class: App\Entity\User
-            label: Utilisateur
+            label: Users
             list:
                 fields:
                     - property: firstName
-                      label: Prénom
+                      label: FirstName
                     - property: lastName
-                      label: Nom
+                      label: LastName
                     - property: email
                       label: Email
                     - property: birthdate
-                      label: Date de naissance
+                      label: Birthdate
                     - property: roles
                       label: Roles
                 actions:
                     - {name: 'addFidelity', type: 'route'}
             form:
-                label: Utilisateur
+                label: User
                 form_options: { validation_groups: [] }
                 fields:
                     - property: firstName
-                      label: Prénom
+                      label: FirstName
                     - property: lastName
-                      label: Nom
+                      label: LastName
                     - property: email
                       label: Email
                     - property: birthdate
-                      label: Date de naissance
+                      label: Birthdate
                     - property: enabled
-                      label: Compte activé
+                      label: Activated account
                     - property: birthdate
                       type: date
-                      label: Date de naissance
+                      label: Birthday
                       type_options:
                         widget: single_text
                     - property: created_at
                       type: date
-                      label: Date de création
+                      label: Created at
                       type_options:
                         disabled: true
                         widget: single_text
@@ -67,7 +66,7 @@ easy_admin:
             delete:
                 item_permission: 'ROLE_ADMIN'
 
-        Order:
+        Card:
             class: App\Entity\Card
             label: Carte
             edit:
@@ -77,9 +76,52 @@ easy_admin:
             delete:
                 item_permission: 'ROLE_ADMIN'
 
-        Product:
-            class: App\Entity\Voucher
-            label: Voucher
+        Gift:
+            class: App\Entity\Gift
+            label: Gift
+            edit:
+                item_permission: 'ROLE_ADMIN'
+            new:
+                item_permission: 'ROLE_ADMIN'
+            delete:
+                item_permission: 'ROLE_ADMIN'
+
+        GiftType:
+            class: App\Entity\GiftType
+            label: GiftType
+            form:
+                fields:
+                    -   property: name
+                        label: Name
+                    -   property: description
+                        label: Description
+                    -   property: duration
+                        label: Durée (en jours)
+                    -   property: fidelityCost
+                        label: Cout en points de fidélité
+            edit:
+                item_permission: 'ROLE_ADMIN'
+            new:
+                item_permission: 'ROLE_ADMIN'
+            delete:
+                item_permission: 'ROLE_ADMIN'
+
+        Event:
+            class: App\Entity\Event
+            label: Event
+            form:
+                fields:
+                    - property: name
+                      label: Name
+                    - property: description
+                      label: Description
+                    - property: startAt
+                      label: StartAt
+                      type: date
+                    - property: duration
+                      label: Durée (en jours)
+                    - property: multiplicateur
+                      label: Multiplicateur
             edit:
                 item_permission: 'ROLE_ADMIN'
             new:
@@ -88,9 +130,12 @@ easy_admin:
                 item_permission: 'ROLE_ADMIN'
 
     site_name: 'Cinesuper'
+
     design:
         brand_color: '#e67e22'
         menu:
             - { entity: 'Customer', icon: 'user' }
-            - { entity: 'Order', icon: 'id-card' }
-            - { entity: 'Product', icon: 'gift' }
+            - { entity: 'Card', icon: 'id-card' }
+            - { entity: 'Gift', icon: 'gift' }
+            - { entity: 'GiftType', icon: 'gift' }
+            - { entity: 'Event', icon: 'gift' }

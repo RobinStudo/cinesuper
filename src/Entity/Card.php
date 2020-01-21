@@ -34,13 +34,13 @@ class Card
     private $user;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Voucher", mappedBy="card", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="App\Entity\Gift", mappedBy="card", orphanRemoval=true)
      */
-    private $vouchers;
+    private $gifts;
 
     public function __construct()
     {
-        $this->vouchers = new ArrayCollection();
+        $this->gifts = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -90,30 +90,30 @@ class Card
     }
 
     /**
-     * @return Collection|Voucher[]
+     * @return Collection|Gift[]
      */
-    public function getVouchers(): Collection
+    public function getGifts(): Collection
     {
-        return $this->vouchers;
+        return $this->gifts;
     }
 
-    public function addVoucher(Voucher $voucher): self
+    public function addGift(Gift $gift): self
     {
-        if (!$this->vouchers->contains($voucher)) {
-            $this->vouchers[] = $voucher;
-            $voucher->setCard($this);
+        if (!$this->gifts->contains($gift)) {
+            $this->gifts[] = $gift;
+            $gift->setCard($this);
         }
 
         return $this;
     }
 
-    public function removeVoucher(Voucher $voucher): self
+    public function removeGift(Gift $gift): self
     {
-        if ($this->vouchers->contains($voucher)) {
-            $this->vouchers->removeElement($voucher);
+        if ($this->gifts->contains($gift)) {
+            $this->gifts->removeElement($gift);
             // set the owning side to null (unless already changed)
-            if ($voucher->getCard() === $this) {
-                $voucher->setCard(null);
+            if ($gift->getCard() === $this) {
+                $gift->setCard(null);
             }
         }
 

@@ -1,0 +1,48 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    {{ encore_entry_link_tags('upFidelity') }}
+{% endblock %}
+
+
+{% block title %}Add Fidelity - {{ parent() }}{% endblock %}
+
+{% block body %}
+    <div id="mainContainer">
+        <h2>Combien de places souhaitez vous ajouter ?</h2>
+
+        <div class=" alert alert-info">
+            Nom : <span class="userIdentity">{{card.user.lastName }}</span>.<br>
+            Prenom : <span class="userIdentity">{{ card.user.firstName }}</span>.<br>
+            Cet utilisateur dispose de : {{ card.fidelity }} point(s) de fidélité.
+        </div>
+
+        <div class="row alert alert-warning">
+            <form method="POST">
+                <div>
+                    <label for="ticketNumber">Nombres de place(s) à ajouter :</label>
+                    <input type="text" class="form-controlmb-3" id="ticketNumber" name="ticketNumber">
+                    <div id="slider"></div>
+                    <div id="sliderValue"></div>
+                </div>
+
+                <button type="submit" class="btn btn-success">Ajouter</button>
+
+                <a href="{{ path('easyadmin')}}" class="btn btn-success">Retour à l'accueil</a>
+            </form>
+        </div>
+        <div class="alert alert-success">
+            {% if multiplicator > 1 %}
+                Il y a un ou des évènements en cours.<br>
+                Une place achetée offre <span id="multiplier">{{ multiplicator }}</span> points de fidélité.
+            {% else %}
+                Il n'y a aucun évènement en cours.<br>
+                Une place achetée offre <span id="multiplier">un</span> point de fidélité.
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ encore_entry_script_tags('upFidelity') }}
+{% endblock %}

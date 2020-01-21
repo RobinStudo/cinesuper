@@ -13,52 +13,52 @@
             {{ form_start( form ) }}
 
             <div class="form-group">
-                {{ form_label(form.firstName) }}
-                {{ form_widget(form.firstName) }}
+                {{ form_label(form.FirstName) }}
+                {{ form_widget(form.FirstName) }}
                 <div class="errors">
-                    {{ form_errors(form.firstName) }}
+                    {{ form_errors(form.FirstName) }}
                 </div>
             </div>
 
             <div class="form-group">
-                {{ form_label(form.lastName) }}
-                {{ form_widget(form.lastName) }}
+                {{ form_label(form.LastName) }}
+                {{ form_widget(form.LastName) }}
                 <div class="errors">
-                    {{ form_errors(form.lastName) }}
+                    {{ form_errors(form.LastName) }}
                 </div>
 
             </div>
 
             
             <div class="form-group">
-                {{ form_label(form.birthdate) }}
+                {{ form_label(form.Birthdate) }}
                 <div class="row">
-                    <div class="col">{{ form_widget(form.birthdate.day) }}</div>
-                    <div class="col">{{ form_widget(form.birthdate.month) }}</div>
-                    <div class="col">{{ form_widget(form.birthdate.year) }}</div>
+                    <div class="col">{{ form_widget(form.Birthdate.day) }}</div>
+                    <div class="col">{{ form_widget(form.Birthdate.month) }}</div>
+                    <div class="col">{{ form_widget(form.Birthdate.year) }}</div>
                 </div>
                 <div class="errors">
-                    {{ form_errors(form.birthdate) }}
+                    {{ form_errors(form.Birthdate) }}
                 </div>
             </div>
 
             <div class="form-group">
-                {{ form_label(form.email) }}
-                {{ form_widget(form.email) }}
+                {{ form_label(form.Email) }}
+                {{ form_widget(form.Email) }}
                 <div class="errors">
-                    {{ form_errors(form.email) }}
+                    {{ form_errors(form.Email) }}
                 
                 </div>  
             </div>
 
             <div class="form-group">
-                {{ form_label(form.password) }}
-                {{ form_widget(form.password) }}
+                {{ form_label(form.Password) }}
+                {{ form_widget(form.Password) }}
                 <div class="errors">
-                    {{ form_errors(form.password) }}
+                    {{ form_errors(form.Password) }}
                 </div>
             </div>
-            <button type="submit" class="btn btn-primary">Inscription</button>
+            <button type="submit" id="submit" class="btn btn-primary">Inscription</button>
             {{ form_end( form ) }} 
         </div> 
     </div>
